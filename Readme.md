@@ -34,4 +34,4 @@
 
 ## Ссылка на Sonar
 
-- https://sonarcloud.io/project/overview?id=
+- https://sonarcloud.io/project/overview?id=snrteftelya_cryptominder

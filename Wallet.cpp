@@ -19,7 +19,7 @@ void Wallet::set_wallet_address() {
         int length = 26;
         std::random_device rd;
         std::mt19937 gen(rd());
-        std::uniform_int_distribution<> dis(0, 15);
+        std::uniform_int_distribution dis(0, 15);
 
         std::string hex_string;
         for (size_t i = 0; i < length; ++i) {
