@@ -11,7 +11,6 @@ private:
     std::string client_name_;
     std::vector<std::unique_ptr<Wallet>> wallets_;
     int account_balance_;
-
 public:
     Account(const std::string &client_name, const int account_balance = 0);
 

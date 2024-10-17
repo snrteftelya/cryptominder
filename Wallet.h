@@ -11,7 +11,6 @@ class Wallet {
 private:
     std::string wallet_address_;
     int wallet_balance_;
-
 public:
     Wallet(const std::string &wallet_address, const int wallet_balance = 0);
 
