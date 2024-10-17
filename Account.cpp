@@ -11,7 +11,6 @@ Account::~Account() {
 void Account::display_account_info() const {
     std::cout << "Client name: " << client_name_ << std::endl;
     std::cout << "Account balance: " << account_balance_ << std::endl;
-
     if (!wallets_.empty()) {
         std::cout << "Attached wallets: " << std::endl << std::endl;
         for (const auto &wallet: wallets_) {
@@ -69,16 +68,15 @@ bool Account::delete_wallet(const std::string_view &wallet_address) {
 
 int Account::get_account_available_balance() const {
     int wallets_balance = 0;
-
     for (const auto &wallet: wallets_) {
         wallets_balance += wallet->get_wallet_balance();
     }
-
     return (account_balance_ - wallets_balance > 0) ? account_balance_ - wallets_balance : 0;
 }
 
-void Account::transfer_money(const std::string_view &recipient_wallet_address, const std::string_view &sender_wallet_address,
-                             const int sum) const {
+void
+Account::transfer_money(const std::string_view &recipient_wallet_address, const std::string_view &sender_wallet_address,
+                        const int sum) const {
     Wallet *sender_wallet = get_wallet(sender_wallet_address);
     if (sender_wallet != nullptr) {
         if (sender_wallet->get_wallet_balance() >= sum) {
