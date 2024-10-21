@@ -1,4 +1,4 @@
-#include "MenuAccountWallet.h"
+#include "headers/MenuAccountWallet.h"
 
 void menu_account_wallet() {
     auto account = std::make_unique<Account>("Mikalai", 300);

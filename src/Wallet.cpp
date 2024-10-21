@@ -1,4 +1,4 @@
-#include "Wallet.h"
+#include "headers/Wallet.h"
 
 Wallet::Wallet(const std::string &wallet_address, const int wallet_balance)
         : wallet_address_(wallet_address), wallet_balance_(wallet_balance) {
