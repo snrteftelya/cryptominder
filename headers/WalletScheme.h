@@ -24,8 +24,8 @@ public:
         std::cout << "Wallet balance: " << wallet_balance << std::endl;
     }
 
-    void set_wallet_balance(const int wallet_bal) {
-        wallet_balance = wallet_bal;
+    void set_wallet_balance(const int wallet_balance) {
+        this->wallet_balance = wallet_balance;
     }
 
     std::string get_wallet_address() const {
@@ -74,16 +74,16 @@ public:
         return client_name;
     }
 
-    void set_client_name(const std::string_view &user_name) {
-        client_name = user_name;
+    void set_client_name(const std::string_view &client_name) {
+        this->client_name = client_name;
     }
 
     int get_account_balance() const {
         return account_balance;
     }
 
-    void set_account_balance(const int account_bal) {
-        account_balance = account_bal;
+    void set_account_balance(const int account_balance) {
+        this->account_balance = account_balance;
     }
 
     const Wallet *get_wallet(const std::string_view &wallet_address) const {

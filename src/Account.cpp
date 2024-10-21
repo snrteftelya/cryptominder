@@ -26,16 +26,16 @@ std::string Account::get_client_name() const {
     return client_name;
 }
 
-void Account::set_client_name(const std::string_view &user_name) {
-    client_name = std::string(user_name);
+void Account::set_client_name(const std::string_view &client_name) {
+    this->client_name = std::string(client_name);
 }
 
 int Account::get_account_balance() const {
     return account_balance;
 }
 
-void Account::set_account_balance(const int account_bal) {
-    account_balance = account_bal;
+void Account::set_account_balance(const int account_balance) {
+    this->account_balance = account_balance;
 }
 
 Wallet *Account::get_wallet(const std::string_view &wallet_address) const {

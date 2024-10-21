@@ -26,8 +26,8 @@ void Wallet::set_wallet_address() {
     wallet_address = std::string(hex_string);
 }
 
-void Wallet::set_wallet_balance(const int wallet_bal) {
-    wallet_balance = wallet_bal;
+void Wallet::set_wallet_balance(const int wallet_balance) {
+    this->wallet_balance = wallet_balance;
 }
 
 std::string Wallet::get_wallet_address() const {

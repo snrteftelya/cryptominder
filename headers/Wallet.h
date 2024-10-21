@@ -20,7 +20,7 @@ public:
 
     void set_wallet_address();
 
-    void set_wallet_balance(const int wallet_bal);
+    void set_wallet_balance(const int wallet_balance);
 
     std::string get_wallet_address() const;
 

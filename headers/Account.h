@@ -20,7 +20,7 @@ public:
 
     std::string get_client_name() const;
 
-    void set_client_name(const std::string_view &user_name);
+    void set_client_name(const std::string_view &client_name);
 
     int get_account_balance() const;
 
