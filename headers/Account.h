@@ -8,9 +8,9 @@
 
 class Account {
 private:
-    std::string client_name_;
-    std::vector<std::unique_ptr<Wallet>> wallets_;
-    int account_balance_;
+    std::string client_name;
+    std::vector<std::unique_ptr<Wallet>> wallets;
+    int account_balance;
 public:
     Account(const std::string &client_name, const int account_balance = 0);
 
@@ -20,7 +20,7 @@ public:
 
     std::string get_client_name() const;
 
-    void set_client_name(const std::string_view &client_name);
+    void set_client_name(const std::string_view &user_name);
 
     int get_account_balance() const;
 

@@ -8,32 +8,32 @@
 
 class Wallet {
 private:
-    std::string wallet_address_;
-    int wallet_balance_;
+    std::string wallet_address;
+    int wallet_balance;
 public:
     Wallet(const std::string &wallet_address, const int wallet_balance = 0)
-            : wallet_address_(wallet_address), wallet_balance_(wallet_balance) {
+            : wallet_address(wallet_address), wallet_balance(wallet_balance) {
     }
 
     ~Wallet() {
-        std::cout << "Address is deleted: " << wallet_address_;
+        std::cout << "Address is deleted: " << wallet_address;
     }
 
     void display_wallet_info() const {
-        std::cout << "Address: " << wallet_address_ << std::endl;
-        std::cout << "Wallet balance: " << wallet_balance_ << std::endl;
+        std::cout << "Address: " << wallet_address << std::endl;
+        std::cout << "Wallet balance: " << wallet_balance << std::endl;
     }
 
-    void set_wallet_balance(const int wallet_balance) {
-        wallet_balance_ = wallet_balance;
+    void set_wallet_balance(const int wallet_bal) {
+        wallet_balance = wallet_bal;
     }
 
     std::string get_wallet_address() const {
-        return wallet_address_;
+        return wallet_address;
     }
 
     int get_wallet_balance() const {
-        return wallet_balance_;
+        return wallet_balance;
     }
 
     Wallet(const Wallet &) = delete;
@@ -43,25 +43,25 @@ public:
 
 class Account {
 private:
-    std::string client_name_;
-    std::vector<std::unique_ptr<Wallet>> wallets_;
-    int account_balance_;
+    std::string client_name;
+    std::vector<std::unique_ptr<Wallet>> wallets;
+    int account_balance;
 public:
     Account(const std::string &client_name, const int account_balance = 0)
-            : client_name_(client_name), account_balance_(account_balance) {
+            : client_name(client_name), account_balance(account_balance) {
     }
 
     ~Account() {
-        wallets_.clear();
+        wallets.clear();
     }
 
     void display_account_info() const {
-        std::cout << "Client name: " << client_name_ << std::endl;
-        std::cout << "Account balance: " << account_balance_ << std::endl;
+        std::cout << "Client name: " << client_name << std::endl;
+        std::cout << "Account balance: " << account_balance << std::endl;
 
-        if (!wallets_.empty()) {
+        if (!wallets.empty()) {
             std::cout << "Attached wallets: " << std::endl << std::endl;
-            for (auto &wallet: wallets_) {
+            for (auto &wallet: wallets) {
                 wallet->display_wallet_info();
                 std::cout << std::endl;
             }
@@ -71,23 +71,23 @@ public:
     }
 
     std::string get_client_name() const {
-        return client_name_;
+        return client_name;
     }
 
-    void set_client_name(const std::string_view &client_name) {
-        client_name_ = client_name;
+    void set_client_name(const std::string_view &user_name) {
+        client_name = user_name;
     }
 
     int get_account_balance() const {
-        return account_balance_;
+        return account_balance;
     }
 
-    void set_account_balance(const int account_balance) {
-        account_balance_ = account_balance;
+    void set_account_balance(const int account_bal) {
+        account_balance = account_bal;
     }
 
     const Wallet *get_wallet(const std::string_view &wallet_address) const {
-        for (const auto &wallet: wallets_) {
+        for (const auto &wallet: wallets) {
             if (wallet->get_wallet_address() == wallet_address) {
                 return wallet.get();
             }
@@ -97,16 +97,16 @@ public:
 
     void add_wallet(std::unique_ptr<Wallet> wallet) {
         if (get_wallet(wallet->get_wallet_address()) == nullptr) {
-            wallets_.push_back(std::move(wallet));
+            wallets.push_back(std::move(wallet));
         } else {
             std::cout << "Wallet is already exists" << std::endl << std::endl;
         }
     }
 
     bool delete_wallet(const std::string_view &wallet_address) {
-        for (auto iter = wallets_.begin(); iter != wallets_.end(); iter++) {
+        for (auto iter = wallets.begin(); iter != wallets.end(); iter++) {
             if ((*iter)->get_wallet_address() == wallet_address) {
-                wallets_.erase(iter);
+                wallets.erase(iter);
                 return true;
             }
         }
@@ -115,15 +115,15 @@ public:
     }
 
     int get_account_available_balance() const {
-        int wallets_balance = 0;
+        int walletsbalance = 0;
         int balance_available = 0;
 
-        for (auto &wallet: wallets_) {
-            wallets_balance += wallet->get_wallet_balance();
+        for (auto &wallet: wallets) {
+            walletsbalance += wallet->get_wallet_balance();
         }
 
-        if (account_balance_ - wallets_balance > 0) {
-            balance_available = account_balance_ - wallets_balance;
+        if (account_balance - walletsbalance > 0) {
+            balance_available = account_balance - walletsbalance;
         }
 
         return balance_available;

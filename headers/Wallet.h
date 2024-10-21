@@ -9,8 +9,8 @@
 
 class Wallet {
 private:
-    std::string wallet_address_;
-    int wallet_balance_;
+    std::string wallet_address;
+    int wallet_balance;
 public:
     Wallet(const std::string &wallet_address, const int wallet_balance = 0);
 
@@ -20,7 +20,7 @@ public:
 
     void set_wallet_address();
 
-    void set_wallet_balance(const int wallet_balance);
+    void set_wallet_balance(const int wallet_bal);
 
     std::string get_wallet_address() const;
 

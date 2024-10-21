@@ -1,16 +1,16 @@
 #include "headers/Wallet.h"
 
 Wallet::Wallet(const std::string &wallet_address, const int wallet_balance)
-        : wallet_address_(wallet_address), wallet_balance_(wallet_balance) {
+        : wallet_address(wallet_address), wallet_balance(wallet_balance) {
 }
 
 Wallet::~Wallet() {
-    std::cout << "Address is deleted: " << wallet_address_ << std::endl;
+    std::cout << "Address is deleted: " << wallet_address << std::endl;
 }
 
 void Wallet::display_wallet_info() const {
-    std::cout << "Wallet address: " << wallet_address_ << std::endl;
-    std::cout << "Wallet balance: " << wallet_balance_ << std::endl;
+    std::cout << "Wallet address: " << wallet_address << std::endl;
+    std::cout << "Wallet balance: " << wallet_balance << std::endl;
 }
 
 void Wallet::set_wallet_address() {
@@ -23,17 +23,17 @@ void Wallet::set_wallet_address() {
     for (size_t i = 0; i < length; ++i) {
         hex_string += hex_chars[dis(gen)];
     }
-    wallet_address_ = std::string(hex_string);
+    wallet_address = std::string(hex_string);
 }
 
-void Wallet::set_wallet_balance(const int wallet_balance) {
-    wallet_balance_ = wallet_balance;
+void Wallet::set_wallet_balance(const int wallet_bal) {
+    wallet_balance = wallet_bal;
 }
 
 std::string Wallet::get_wallet_address() const {
-    return wallet_address_;
+    return wallet_address;
 }
 
 int Wallet::get_wallet_balance() const {
-    return wallet_balance_;
+    return wallet_balance;
 }
