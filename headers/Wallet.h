@@ -12,7 +12,7 @@ private:
     std::string wallet_address;
     int wallet_balance;
 public:
-    Wallet(const std::string &wallet_address, const int wallet_balance = 0);
+    Wallet(const std::string &wallet_address, const int wallet_balance_input = 0);
 
     ~Wallet();
 
@@ -20,7 +20,7 @@ public:
 
     void set_wallet_address();
 
-    void set_wallet_balance(const int wallet_balance);
+    void set_wallet_balance(const int wallet_balance_input);
 
     std::string get_wallet_address() const;
 

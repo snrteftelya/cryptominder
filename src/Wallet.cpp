@@ -1,7 +1,7 @@
 #include "headers/Wallet.h"
 
-Wallet::Wallet(const std::string &wallet_address, const int wallet_balance)
-        : wallet_address(wallet_address), wallet_balance(wallet_balance) {
+Wallet::Wallet(const std::string &wallet_address, const int wallet_balance_input)
+        : wallet_address(wallet_address), wallet_balance(wallet_balance_input) {
 }
 
 Wallet::~Wallet() {
@@ -26,8 +26,8 @@ void Wallet::set_wallet_address() {
     wallet_address = std::string(hex_string);
 }
 
-void Wallet::set_wallet_balance(const int wallet_balance) {
-    this->wallet_balance = wallet_balance;
+void Wallet::set_wallet_balance(const int wallet_balance_input) {
+    wallet_balance = wallet_balance_input;
 }
 
 std::string Wallet::get_wallet_address() const {

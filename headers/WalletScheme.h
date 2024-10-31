@@ -11,8 +11,8 @@ private:
     std::string wallet_address;
     int wallet_balance;
 public:
-    Wallet(const std::string &wallet_address, const int wallet_balance = 0)
-            : wallet_address(wallet_address), wallet_balance(wallet_balance) {
+    Wallet(const std::string &wallet_address, const int wallet_balance_input = 0)
+            : wallet_address(wallet_address), wallet_balance(wallet_balance_input) {
     }
 
     ~Wallet() {
@@ -24,8 +24,8 @@ public:
         std::cout << "Wallet balance: " << wallet_balance << std::endl;
     }
 
-    void set_wallet_balance(const int wallet_balance) {
-        this->wallet_balance = wallet_balance;
+    void set_wallet_balance(const int wallet_balance_input) {
+        wallet_balance = wallet_balance_input;
     }
 
     std::string get_wallet_address() const {
@@ -47,8 +47,8 @@ private:
     std::vector<std::unique_ptr<Wallet>> wallets;
     int account_balance;
 public:
-    Account(const std::string &client_name, const int account_balance = 0)
-            : client_name(client_name), account_balance(account_balance) {
+    Account(const std::string &client_name, const int account_balance_input = 0)
+            : client_name(client_name), account_balance(account_balance_input) {
     }
 
     ~Account() {
@@ -74,16 +74,16 @@ public:
         return client_name;
     }
 
-    void set_client_name(const std::string_view &client_name) {
-        this->client_name = client_name;
+    void set_client_name(const std::string_view &client_name_input) {
+        client_name = client_name_input;
     }
 
     int get_account_balance() const {
         return account_balance;
     }
 
-    void set_account_balance(const int account_balance) {
-        this->account_balance = account_balance;
+    void set_account_balance(const int account_balance_input) {
+        account_balance = account_balance_input;
     }
 
     const Wallet *get_wallet(const std::string_view &wallet_address) const {

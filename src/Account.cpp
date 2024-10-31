@@ -1,7 +1,7 @@
 #include "headers/Account.h"
 
-Account::Account(const std::string &client_name, const int account_balance)
-        : client_name(client_name), account_balance(account_balance) {
+Account::Account(const std::string &client_name, const int account_balance_input)
+        : client_name(client_name), account_balance(account_balance_input) {
 }
 
 Account::~Account() {
@@ -26,16 +26,16 @@ std::string Account::get_client_name() const {
     return client_name;
 }
 
-void Account::set_client_name(const std::string_view &client_name) {
-    this->client_name = std::string(client_name);
+void Account::set_client_name(const std::string_view &client_name_input) {
+    client_name = std::string(client_name_input);
 }
 
 int Account::get_account_balance() const {
     return account_balance;
 }
 
-void Account::set_account_balance(const int account_balance) {
-    this->account_balance = account_balance;
+void Account::set_account_balance(const int account_balance_input) {
+    account_balance = account_balance_input;
 }
 
 Wallet *Account::get_wallet(const std::string_view &wallet_address) const {
