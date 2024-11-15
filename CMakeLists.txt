@@ -10,7 +10,6 @@ set(SOURCE
         headers/Account.h
         src/Wallet.cpp
         headers/Wallet.h
-        headers/WalletScheme.h
         src/main.cpp
         src/MenuAccountWallet.cpp
         headers/MenuAccountWallet.h
