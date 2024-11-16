@@ -1,11 +1,13 @@
 #pragma once
 
+#include "pqxx/pqxx"
 #include <iostream>
 #include <vector>
 #include <string>
 #include <string_view>
 #include <memory>
 #include "Account.h"
+
 
 enum class menu_options {
     end = 0,

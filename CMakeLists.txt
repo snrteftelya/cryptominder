@@ -17,5 +17,9 @@ set(SOURCE
 
 add_executable(cryptominder ${SOURCE})
 
-        target_include_directories(cryptominder PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/headers")
+include_directories("/opt/homebrew/Cellar/libpqxx/7.9.2/include")
+
+target_link_libraries(cryptominder PRIVATE /opt/homebrew/Cellar/libpqxx/7.9.2/lib/libpqxx-7.9.dylib)
+
+target_include_directories(cryptominder PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/headers")
 target_include_directories(cryptominder PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src")
