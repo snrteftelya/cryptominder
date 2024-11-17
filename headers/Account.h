@@ -16,7 +16,7 @@ private:
 public:
     std::vector<std::unique_ptr<Wallet>> wallets;
     Account(const std::string &username, const std::string &email, const std::string &password_hash, pqxx::connection &conn);
-    ~Account();
+    ~Account() final;
     void display_account_info() const;
     void set_client_name(const std::string &client_name);
     void set_account_email(const std::string &email);
