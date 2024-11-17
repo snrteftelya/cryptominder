@@ -5,7 +5,7 @@ private:
     pqxx::connection C;
 
 public:
-    DatabaseSchema(const std::string &connectionString);
+    explicit DatabaseSchema(const std::string &connectionString);
 
     void createTables();
 };

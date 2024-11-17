@@ -5,7 +5,6 @@
 Transaction::Transaction(pqxx::connection &connection) : C(connection) {}
 
 void Transaction::addTransaction(const std::string_view &sender_wallet_address, const std::string_view &receiver_wallet_address, const double &amount, const double &transaction_fee) {
-    try {
         pqxx::work W(C);
         std::string query = "INSERT INTO transactions (sender_wallet_address, receiver_wallet_address, amount, transaction_fee) "
                              "VALUES ('" + std::string(sender_wallet_address) + "', '" + std::string(receiver_wallet_address) + "', "
@@ -14,13 +13,9 @@ void Transaction::addTransaction(const std::string_view &sender_wallet_address, 
         int transaction_id = R[0][0].as<int>();
         W.commit();
         std::cout << "Transaction w ID: " << transaction_id << std::endl;
-    } catch (const std::exception &e) {
-        std::cerr << "Failure w add transaction: " << e.what() << std::endl;
-    }
 }
 
 void Transaction::getTransactions() {
-    try {
         pqxx::nontransaction N(C);
         std::string query = "SELECT * FROM transactions;";
         pqxx::result R = N.exec(query);
@@ -35,7 +30,4 @@ void Transaction::getTransactions() {
             std::cout << "Created At: " << row[6].as<std::string_view>() << std::endl;
             std::cout << "--------------------------------------------" << std::endl;
         }
-    } catch (const std::exception &e) {
-        std::cerr << "Failure w get transaction: " << e.what() << std::endl;
-    }
 }

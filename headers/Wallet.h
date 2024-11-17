@@ -10,8 +10,8 @@ private:
 public:
     Wallet(const std::string &wallet_address, double wallet_balance, pqxx::connection &conn);
 
-    ~Wallet();
-
+    ~Wallet() = default;
+    
     void set_wallet_address();
 
     void set_wallet_balance(double wallet_balance_input);
@@ -20,11 +20,11 @@ public:
 
     double get_wallet_balance() const;
 
-    bool operator==(const Wallet &other) const;
-
-    Wallet operator+(const Wallet &other) const;
-
+    friend bool operator==(const Wallet &lhs, const Wallet &rhs);
+    friend Wallet operator+(const Wallet &lhs, const Wallet &rhs);
     friend std::ostream& operator<<(std::ostream& os, const Wallet& wallet);
+
+
 };
 
 bool get_wallets_by_address(const std::string &address1, const std::string &address2,

@@ -9,7 +9,6 @@ DatabaseSchema::DatabaseSchema(const std::string &connectionString) : C(connecti
 }
 
 void DatabaseSchema::createTables() {
-    try {
         pqxx::work W(C);
 
         std::string createAccountTable = R"(
@@ -51,7 +50,4 @@ void DatabaseSchema::createTables() {
         W.commit();
 
         std::cout << "Tables are successfully created or exist." << std::endl;
-    } catch (const std::exception &e) {
-        std::cerr << "Unluck" << e.what() << std::endl;
-    }
 }

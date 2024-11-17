@@ -12,7 +12,7 @@ Account::~Account() {
 }
 
 void Account::load_from_db(int account_id) {
-    try {
+
         pqxx::work txn(conn);
         pqxx::result account_result = txn.exec_params(
             "SELECT username, email FROM account WHERE account_id = $1", account_id
@@ -33,13 +33,9 @@ void Account::load_from_db(int account_id) {
         } else {
             std::cerr << "Account not found in the database." << std::endl;
         }
-    } catch (const std::exception &e) {
-        std::cerr << "Database error: " << e.what() << std::endl;
-    }
 }
 
 void Account::save_to_db() const {
-    try {
         pqxx::work txn(conn);
         txn.exec_params(
             "INSERT INTO account (username, email, password_hash, created_at) VALUES ($1, $2, $3, CURRENT_TIMESTAMP)",
@@ -53,33 +49,22 @@ void Account::save_to_db() const {
         }
         txn.commit();
         std::cout << "Account and wallets saved to database." << std::endl;
-    } catch (const std::exception &e) {
-        std::cerr << "Database error: " << e.what() << std::endl;
-    }
 }
 
 void Account::set_client_name(const std::string &client_name) {
     username = client_name;
-    try {
         pqxx::work txn(conn);
         txn.exec_params("UPDATE account SET username = $1 WHERE account_id = $2", client_name, 1);
         txn.commit();
         std::cout << "Client name updated successfully." << std::endl;
-    } catch (const std::exception &e) {
-        std::cerr << "Error updating client name: " << e.what() << std::endl;
-    }
 }
 
 void Account::set_account_email(const std::string &client_email) {
     email = client_email;
-    try {
         pqxx::work txn(conn);
         txn.exec_params("UPDATE account SET email = $1 WHERE account_id = $2", client_email, 1);
         txn.commit();
         std::cout << "Client email updated successfully." << std::endl;
-    } catch (const std::exception &e) {
-        std::cerr << "Error updating client email: " << e.what() << std::endl;
-    }
 }
 
 void Account::add_wallet(double initial_balance) {
@@ -98,18 +83,13 @@ void Account::add_wallet(double initial_balance) {
 
     wallet->set_wallet_balance(initial_balance);
     wallets.push_back(std::move(wallet));
-
-    try {
-        pqxx::work txn(conn);
+    pqxx::work txn(conn);
         txn.exec_params(
             "INSERT INTO wallet (account_id, wallet_address, currency, balance, created_at) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP)",
             1, wallet_address, "TON", initial_balance
         );
         txn.commit();
         std::cout << "Wallet added successfully with address: " << wallet_address << std::endl;
-    } catch (const std::exception &e) {
-        std::cerr << "Database error: " << e.what() << std::endl;
-    }
 }
 
 bool Account::delete_wallet(const std::string &wallet_address) {
@@ -123,17 +103,11 @@ bool Account::delete_wallet(const std::string &wallet_address) {
     }
 
     wallets.erase(it);
-
-    try {
-        pqxx::work txn(conn);
+    pqxx::work txn(conn);
         txn.exec_params("DELETE FROM wallet WHERE wallet_address = $1", wallet_address);
         txn.commit();
         std::cout << "Wallet deleted successfully." << std::endl;
         return true;
-    } catch (const std::exception &e) {
-        std::cerr << "Error deleting wallet: " << e.what() << std::endl;
-        return false;
-    }
 }
 
 void Account::transfer_money(const std::string &from_wallet, const std::string &to_wallet, double amount) {
@@ -165,18 +139,13 @@ void Account::transfer_money(const std::string &from_wallet, const std::string &
 
     sender->set_wallet_balance(sender->get_wallet_balance() - amount);
     receiver->set_wallet_balance(receiver->get_wallet_balance() + amount);
-
-    try {
-        pqxx::work txn(conn);
+    pqxx::work txn(conn);
         txn.exec_params("UPDATE wallet SET balance = $1 WHERE wallet_address = $2", sender->get_wallet_balance(), from_wallet);
         txn.exec_params("UPDATE wallet SET balance = $1 WHERE wallet_address = $2", receiver->get_wallet_balance(), to_wallet);
         txn.commit();
         Transaction transaction(conn);
         transaction.addTransaction(from_wallet, to_wallet, amount, 0);
         std::cout << "Transfer successful!" << std::endl;
-    } catch (const std::exception &e) {
-        std::cerr << "Error during transfer: " << e.what() << std::endl;
-    }
 }
 
 void Account::display_account_info() const {

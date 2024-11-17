@@ -34,13 +34,13 @@ double Wallet::get_wallet_balance() const {
     return wallet_balance;
 }
 
-bool Wallet::operator==(const Wallet &other) const {
-    return (wallet_address == other.wallet_address && wallet_balance == other.wallet_balance);
+bool operator==(const Wallet &lhs, const Wallet &rhs) {
+    return (lhs.wallet_address == rhs.wallet_address && lhs.wallet_balance == rhs.wallet_balance);
 }
 
-Wallet Wallet::operator+(const Wallet &other) const {
-    double new_balance = wallet_balance + other.wallet_balance;
-    return Wallet(wallet_address, new_balance, conn);
+Wallet operator+(const Wallet &lhs, const Wallet &rhs) {
+    double new_balance = lhs.wallet_balance + rhs.wallet_balance;
+    return Wallet(lhs.wallet_address, new_balance, lhs.conn);
 }
 
 std::ostream& operator<<(std::ostream& os, const Wallet& wallet) {
