@@ -11,7 +11,6 @@ private:
     std::string email;
     std::string password_hash;
     pqxx::connection &conn;
-
 public:
     std::vector<std::unique_ptr<Wallet>> wallets;
     Account(const std::string &username, const std::string &email, const std::string &password_hash, pqxx::connection &conn);

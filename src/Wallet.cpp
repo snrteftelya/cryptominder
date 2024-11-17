@@ -50,6 +50,3 @@ bool get_wallets_by_address(const std::string &address1, const std::string &addr
         return false;
     }
 }
-
-
-
