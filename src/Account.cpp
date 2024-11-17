@@ -72,7 +72,7 @@ void Account::add_wallet(double initial_balance) {
     wallet->set_wallet_address();
     std::string wallet_address = wallet->get_wallet_address();
 
-    auto it = std::find_if(wallets.begin(), wallets.end(), [&wallet_address](const std::unique_ptr<Wallet> &w) {
+    auto it = std::ranges::find_if(wallets.begin(), wallets.end(), [&wallet_address](const std::unique_ptr<Wallet> &w) {
         return w->get_wallet_address() == wallet_address;
     });
 
@@ -93,7 +93,7 @@ void Account::add_wallet(double initial_balance) {
 }
 
 bool Account::delete_wallet(const std::string &wallet_address) {
-    auto it = std::find_if(wallets.begin(), wallets.end(), [&wallet_address](const std::unique_ptr<Wallet> &wallet) {
+    auto it = std::ranges::find_if(wallets.begin(), wallets.end(), [&wallet_address](const std::unique_ptr<Wallet> &wallet) {
         return wallet->get_wallet_address() == wallet_address;
     });
 
@@ -116,11 +116,11 @@ void Account::transfer_money(const std::string &from_wallet, const std::string &
         return;
     }
 
-    auto sender_it = std::find_if(wallets.begin(), wallets.end(), [&from_wallet](const std::unique_ptr<Wallet> &wallet) {
+    auto sender_it = std::ranges::find_if(wallets.begin(), wallets.end(), [&from_wallet](const std::unique_ptr<Wallet> &wallet) {
         return wallet->get_wallet_address() == from_wallet;
     });
 
-    auto receiver_it = std::find_if(wallets.begin(), wallets.end(), [&to_wallet](const std::unique_ptr<Wallet> &wallet) {
+    auto receiver_it = std::ranges::find_if(wallets.begin(), wallets.end(), [&to_wallet](const std::unique_ptr<Wallet> &wallet) {
         return wallet->get_wallet_address() == to_wallet;
     });
 

@@ -6,9 +6,6 @@ Wallet::Wallet(const std::string &wallet_address, const double wallet_balance, p
         : wallet_address(wallet_address), wallet_balance(wallet_balance), conn(conn) {
 }
 
-Wallet::~Wallet() {
-}
-
 void Wallet::set_wallet_address() {
     const char hex_chars[] = "0123456789abcdef";
     int length = 26;
@@ -34,28 +31,14 @@ double Wallet::get_wallet_balance() const {
     return wallet_balance;
 }
 
-bool operator==(const Wallet &lhs, const Wallet &rhs) {
-    return (lhs.wallet_address == rhs.wallet_address && lhs.wallet_balance == rhs.wallet_balance);
-}
-
-Wallet operator+(const Wallet &lhs, const Wallet &rhs) {
-    double new_balance = lhs.wallet_balance + rhs.wallet_balance;
-    return Wallet(lhs.wallet_address, new_balance, lhs.conn);
-}
-
-std::ostream& operator<<(std::ostream& os, const Wallet& wallet) {
-    os << "Address: " << wallet.wallet_address << ", Balance: " << wallet.wallet_balance;
-    return os;
-}
-
 bool get_wallets_by_address(const std::string &address1, const std::string &address2,
                             Wallet*& wallet1, Wallet*& wallet2,
                             std::vector<std::unique_ptr<Wallet>>& wallets) {
-    auto wallet1_it = std::find_if(wallets.begin(), wallets.end(),
+    auto wallet1_it = std::ranges::find_if(wallets.begin(), wallets.end(),
         [&address1](const std::unique_ptr<Wallet> &wallet) {
             return wallet->get_wallet_address() == address1;
         });
-    auto wallet2_it = std::find_if(wallets.begin(), wallets.end(),
+    auto wallet2_it = std::ranges::find_if(wallets.begin(), wallets.end(),
         [&address2](const std::unique_ptr<Wallet> &wallet) {
             return wallet->get_wallet_address() == address2;
         });

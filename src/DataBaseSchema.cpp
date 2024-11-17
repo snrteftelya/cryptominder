@@ -2,11 +2,7 @@
 #include <iostream>
 #include <pqxx/pqxx>
 
-DatabaseSchema::DatabaseSchema(const std::string &connectionString) : C(connectionString) {
-    if (!C.is_open()) {
-        throw std::runtime_error("Exception opening database connection.");
-    }
-}
+DatabaseSchema::DatabaseSchema(const std::string &connectionString) : C(connectionString) {}
 
 void DatabaseSchema::createTables() {
         pqxx::work W(C);

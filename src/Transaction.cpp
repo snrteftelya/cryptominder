@@ -6,9 +6,11 @@ Transaction::Transaction(pqxx::connection &connection) : C(connection) {}
 
 void Transaction::addTransaction(const std::string_view &sender_wallet_address, const std::string_view &receiver_wallet_address, const double &amount, const double &transaction_fee) {
         pqxx::work W(C);
-        std::string query = "INSERT INTO transactions (sender_wallet_address, receiver_wallet_address, amount, transaction_fee) "
-                             "VALUES ('" + std::string(sender_wallet_address) + "', '" + std::string(receiver_wallet_address) + "', "
-                             + std::to_string(amount) + ", " + std::to_string(transaction_fee) + ") RETURNING transaction_id;";
+    std::string query = std::format(
+        "INSERT INTO transactions (sender_wallet_address, receiver_wallet_address, amount, transaction_fee) "
+        "VALUES ('{}', '{}', {}, {}) RETURNING transaction_id;",
+        sender_wallet_address, receiver_wallet_address, amount, transaction_fee
+    );
         pqxx::result R = W.exec(query);
         int transaction_id = R[0][0].as<int>();
         W.commit();

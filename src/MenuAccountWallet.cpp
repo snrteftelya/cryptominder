@@ -8,7 +8,7 @@ void menu_account_wallet() {
     auto account = std::make_unique<Account>("Mikalai","test", "123", conn);
     auto transaction = Transaction(conn);
     auto new_wallet = std::make_unique<Wallet>("wallet_address_example", 0.0, conn);
-    // account->save_to_db();
+    account->save_to_db();
     while (true) {
         std::cout << "1) Display account info" << std::endl;
         std::cout << "2) Add wallet" << std::endl;
@@ -80,7 +80,8 @@ void menu_account_wallet() {
                 break;
             }
             case menu_options::merge_wallets: {
-                std::string wallet_address1, wallet_address2;
+                std::string wallet_address1;
+                std::string wallet_address2;
                 std::cout << "Enter first wallet address to merge: ";
                 std::cin >> wallet_address1;
                 std::cout << "Enter second wallet address to merge: ";
@@ -96,7 +97,8 @@ void menu_account_wallet() {
                 break;
             }
             case menu_options::compare_wallets: {
-                std::string wallet_address1, wallet_address2;
+                std::string wallet_address1;
+                std::string wallet_address2;
                 std::cout << "Enter first wallet address to compare: ";
                 std::cin >> wallet_address1;
                 std::cout << "Enter second wallet address to compare: ";
