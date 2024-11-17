@@ -1,24 +1,16 @@
-#pragma once
-
 #include "pqxx/pqxx"
-#include <iostream>
-#include <vector>
-#include <string>
-#include <string_view>
-#include <memory>
 #include "Account.h"
-
-
+#include "Wallet.h"
+#include <iostream>
 enum class menu_options {
     end = 0,
     account_info,
     add_wallet,
     delete_wallet,
-    get_balance,
     set_name,
-    set_balance,
-    transfer_account,
-    transfer_wallets
+    set_email,
+    transfer_wallets,
+    get_transactions
 };
 
 void menu_account_wallet();

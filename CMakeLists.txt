@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.26)
 project(cryptominder)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 23)
 
 include_directories(.)
 
@@ -13,6 +13,10 @@ set(SOURCE
         src/main.cpp
         src/MenuAccountWallet.cpp
         headers/MenuAccountWallet.h
+        src/DataBaseSchema.cpp
+        headers/DataBaseSchema.h
+        src/Transaction.cpp
+        headers/Transaction.h
 )
 
 add_executable(cryptominder ${SOURCE})

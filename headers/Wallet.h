@@ -2,17 +2,16 @@
 
 #include <string>
 #include <string_view>
+#include <pqxx/pqxx>
 #include <iostream>
-#include <random>
-#include <iomanip>
-#include <sstream>
 
 class Wallet {
 private:
     std::string wallet_address;
-    int wallet_balance;
+    double wallet_balance;
+    pqxx::connection &conn;
 public:
-    Wallet(const std::string &wallet_address, const int wallet_balance_input = 0);
+    Wallet(const std::string &wallet_address, const double wallet_balance, pqxx::connection &conn);
 
     ~Wallet();
 
@@ -20,11 +19,13 @@ public:
 
     void set_wallet_address();
 
-    void set_wallet_balance(const int wallet_balance_input);
+    void set_wallet_balance(const double wallet_balance_input);
 
     std::string get_wallet_address() const;
 
-    int get_wallet_balance() const;
+    double get_wallet_balance() const;
+
+    void load_from_db();
 
     Wallet(const Wallet &) = delete;
 

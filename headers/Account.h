@@ -5,41 +5,43 @@
 #include <vector>
 #include <memory>
 #include "headers/Wallet.h"
+#include <pqxx/pqxx>
+#include "Transaction.h"
+
 
 class Account {
 private:
-    std::string client_name;
+    std::string username;
+    std::string email;
+    std::string password_hash;
     std::vector<std::unique_ptr<Wallet>> wallets;
-    int account_balance;
+    pqxx::connection &conn;
 public:
-    Account(const std::string &client_name, const int account_balance_input = 0);
+    Account(const std::string &username, const std::string &email, const std::string &password_hash, pqxx::connection &conn);
 
     ~Account();
 
-    void display_account_info() const;
-
-    std::string get_client_name() const;
+    void display_account_info();
 
     void set_client_name(const std::string_view &client_name_input);
 
-    int get_account_balance() const;
+    void set_account_email(const std::string_view &client_email_input);
 
-    void set_account_balance(const int account_balance_input);
-
-    Wallet *get_wallet(const std::string_view &wallet_address_input) const;
-
+    std::unique_ptr<Wallet> get_wallet(const std::string_view &wallet_address) const;
     void add_wallet(std::unique_ptr<Wallet> wallet);
 
     bool delete_wallet(const std::string_view &wallet_address_input);
 
-    int get_account_available_balance() const;
-
     void transfer_money(const std::string_view &recipient_wallet_address, const std::string_view &sender_wallet_address,
-                        const int sum) const;
+                        const double sum) const;
 
-    void transfer_money(const std::string_view &wallet_address_input, const int sum) const;
+    void save_to_db() const;
+
+    void load_from_db();
 
     Account(const Account &) = delete;
 
     void operator=(const Account &) = delete;
+
+    void display_account_info() const;
 };
