@@ -17,6 +17,8 @@ set(SOURCE
         headers/DataBaseSchema.h
         src/Transaction.cpp
         headers/Transaction.h
+        headers/IPersistable.h
+        headers/ITransferable.h
 )
 
 add_executable(cryptominder ${SOURCE})
