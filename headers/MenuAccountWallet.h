@@ -1,7 +1,8 @@
 #include "pqxx/pqxx"
 #include "Account.h"
-#include "Wallet.h"
+#include "DataBaseSchema.h"
 #include <iostream>
+
 enum class menu_options {
     end = 0,
     account_info,
@@ -10,7 +11,9 @@ enum class menu_options {
     set_name,
     set_email,
     transfer_wallets,
-    get_transactions
+    get_transactions,
+    merge_wallets,
+    compare_wallets
 };
 
 void menu_account_wallet();

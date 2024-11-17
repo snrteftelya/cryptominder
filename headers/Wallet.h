@@ -1,9 +1,6 @@
-#pragma once
-
 #include <string>
 #include <string_view>
 #include <pqxx/pqxx>
-#include <iostream>
 
 class Wallet {
 private:
@@ -11,23 +8,25 @@ private:
     double wallet_balance;
     pqxx::connection &conn;
 public:
-    Wallet(const std::string &wallet_address, const double wallet_balance, pqxx::connection &conn);
+    Wallet(const std::string &wallet_address, double wallet_balance, pqxx::connection &conn);
 
     ~Wallet();
 
-    void display_wallet_info() const;
-
     void set_wallet_address();
 
-    void set_wallet_balance(const double wallet_balance_input);
+    void set_wallet_balance(double wallet_balance_input);
 
     std::string get_wallet_address() const;
 
     double get_wallet_balance() const;
 
-    void load_from_db();
+    bool operator==(const Wallet &other) const;
 
-    Wallet(const Wallet &) = delete;
+    Wallet operator+(const Wallet &other) const;
 
-    void operator=(const Wallet &) = delete;
+    friend std::ostream& operator<<(std::ostream& os, const Wallet& wallet);
 };
+
+bool get_wallets_by_address(const std::string &address1, const std::string &address2,
+                            Wallet*& wallet1, Wallet*& wallet2,
+                            std::vector<std::unique_ptr<Wallet>>& wallets);

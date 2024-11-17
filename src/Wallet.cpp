@@ -9,11 +9,6 @@ Wallet::Wallet(const std::string &wallet_address, const double wallet_balance, p
 Wallet::~Wallet() {
 }
 
-void Wallet::display_wallet_info() const {
-    std::cout << "Wallet address: " << wallet_address << std::endl;
-    std::cout << "Wallet balance: " << wallet_balance << std::endl;
-}
-
 void Wallet::set_wallet_address() {
     const char hex_chars[] = "0123456789abcdef";
     int length = 26;
@@ -28,16 +23,7 @@ void Wallet::set_wallet_address() {
 }
 
 void Wallet::set_wallet_balance(const double wallet_balance_input) {
-    try {
-        pqxx::work txn(conn);
-        txn.exec_params(
-                "UPDATE wallet SET balance = $1 WHERE wallet_address = $2",
-                wallet_balance_input, wallet_address
-        );
-        txn.commit();
-    } catch (const std::exception &e) {
-        std::cerr << "Error updating wallet balance in database: " << e.what() << std::endl;
-    }
+    wallet_balance = wallet_balance_input;
 }
 
 std::string Wallet::get_wallet_address() const {
@@ -48,22 +34,39 @@ double Wallet::get_wallet_balance() const {
     return wallet_balance;
 }
 
-void Wallet::load_from_db() {
-    try {
-        pqxx::work txn(conn);
-        pqxx::result result = txn.exec_params(
-            "SELECT wallet_address, balance FROM wallet WHERE account_id = 1"
-        );
-        if (!result.empty()) {
-            for (const auto& row : result) {
-                std::string wallet_address = row["wallet_address"].c_str();
-                double wallet_balance = row["balance"].as<double>();
-                std::cout << "Wallet address: " << wallet_address << ", Balance: " << wallet_balance << std::endl;
-            }
-        } else {
-            std::cout << "No wallets found in database for this account." << std::endl;
-        }
-    } catch (const std::exception &e) {
-        std::cerr << "Database error: " << e.what() << std::endl;
+bool Wallet::operator==(const Wallet &other) const {
+    return (wallet_address == other.wallet_address && wallet_balance == other.wallet_balance);
+}
+
+Wallet Wallet::operator+(const Wallet &other) const {
+    double new_balance = wallet_balance + other.wallet_balance;
+    return Wallet(wallet_address, new_balance, conn);
+}
+
+std::ostream& operator<<(std::ostream& os, const Wallet& wallet) {
+    os << "Address: " << wallet.wallet_address << ", Balance: " << wallet.wallet_balance;
+    return os;
+}
+
+bool get_wallets_by_address(const std::string &address1, const std::string &address2,
+                            Wallet*& wallet1, Wallet*& wallet2,
+                            std::vector<std::unique_ptr<Wallet>>& wallets) {
+    auto wallet1_it = std::find_if(wallets.begin(), wallets.end(),
+        [&address1](const std::unique_ptr<Wallet> &wallet) {
+            return wallet->get_wallet_address() == address1;
+        });
+    auto wallet2_it = std::find_if(wallets.begin(), wallets.end(),
+        [&address2](const std::unique_ptr<Wallet> &wallet) {
+            return wallet->get_wallet_address() == address2;
+        });
+    if (wallet1_it != wallets.end() && wallet2_it != wallets.end()) {
+        wallet1 = wallet1_it->get();
+        wallet2 = wallet2_it->get();
+        return true;
+    } else {
+        return false;
     }
 }
+
+
+

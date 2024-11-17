@@ -1,4 +1,4 @@
-#include "DatabaseSchema.h"
+#include "headers/DataBaseSchema.h"
 #include <iostream>
 #include <pqxx/pqxx>
 
