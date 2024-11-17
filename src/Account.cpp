@@ -144,7 +144,7 @@ void Account::transfer_money(const std::string &from_wallet, const std::string &
         txn.exec_params("UPDATE wallet SET balance = $1 WHERE wallet_address = $2", receiver->get_wallet_balance(), to_wallet);
         txn.commit();
         Transaction transaction(conn);
-        transaction.addTransaction(from_wallet, to_wallet, amount, 0);
+        transaction.add_transaction(from_wallet, to_wallet, amount, 0);
         std::cout << "Transfer successful!" << std::endl;
 }
 

@@ -4,7 +4,7 @@
 
 Transaction::Transaction(pqxx::connection &connection) : C(connection) {}
 
-void Transaction::addTransaction(const std::string_view &sender_wallet_address, const std::string_view &receiver_wallet_address, const double &amount, const double &transaction_fee) {
+void Transaction::add_transaction(const std::string_view &sender_wallet_address, const std::string_view &receiver_wallet_address, const double &amount, const double &transaction_fee) {
         pqxx::work W(C);
     std::string query = std::format(
         "INSERT INTO transactions (sender_wallet_address, receiver_wallet_address, amount, transaction_fee) "
@@ -17,7 +17,7 @@ void Transaction::addTransaction(const std::string_view &sender_wallet_address, 
         std::cout << "Transaction w ID: " << transaction_id << std::endl;
 }
 
-void Transaction::getTransactions() {
+void Transaction::get_transactions() {
         pqxx::nontransaction N(C);
         std::string query = "SELECT * FROM transactions;";
         pqxx::result R = N.exec(query);

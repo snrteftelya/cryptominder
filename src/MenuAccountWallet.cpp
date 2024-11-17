@@ -68,7 +68,7 @@ void handle_transfer_money(Account* account) {
 
 void handle_get_transactions(Transaction* transaction) {
     std::cout << "Here are the transactions:" << std::endl;
-    transaction->getTransactions();
+    transaction->get_transactions();
 }
 
 void handle_merge_wallets(Account* account) {
@@ -112,12 +112,11 @@ void menu_account_wallet() {
     std::string connectionString = "dbname=crypto user=crypto_owner password=I6XNyohUfBj8 host=ep-yellow-truth-a2dw0siz.eu-central-1.aws.neon.tech sslmode=require";
     pqxx::connection conn(connectionString);
     DatabaseSchema db(connectionString);
-    db.createTables();
+    db.create_tables();
     auto account = std::make_unique<Account>("Mikalai", "test", "123", conn);
     auto transaction = Transaction(conn);
     auto new_wallet = std::make_unique<Wallet>("wallet_address_example", 0.0, conn);
     account->save_to_db();
-
     using enum menu_options;
     while (true) {
         display_menu();
