@@ -1,4 +1,4 @@
-#include "headers/MenuAccountWallet.h"
+#include <MenuAccountWallet.h>
 
 void display_menu() {
     std::cout << "1) Display account info" << std::endl;
@@ -43,7 +43,6 @@ void handle_set_name(Account* account) {
     std::string new_name;
     std::cout << "Enter new account name: ";
     std::cin >> new_name;
-    std::cout << std::endl;
     account->set_client_name(new_name);
 }
 
@@ -51,12 +50,12 @@ void handle_set_email(Account* account) {
     std::string new_email;
     std::cout << "Enter new email: ";
     std::cin >> new_email;
-    std::cout << std::endl;
     account->set_account_email(new_email);
 }
 
 void handle_transfer_money(Account* account) {
-    std::string recipient_wallet_address, sender_wallet_address;
+    std::string recipient_wallet_address;
+    std::string sender_wallet_address;
     double sum;
     std::cout << "Enter recipient wallet address: ";
     std::cin >> recipient_wallet_address;
@@ -73,7 +72,8 @@ void handle_get_transactions(Transaction* transaction) {
 }
 
 void handle_merge_wallets(Account* account) {
-    std::string wallet_address1, wallet_address2;
+    std::string wallet_address1;
+    std::string wallet_address2;
     std::cout << "Enter first wallet address to merge: ";
     std::cin >> wallet_address1;
     std::cout << "Enter second wallet address to merge: ";
@@ -89,7 +89,8 @@ void handle_merge_wallets(Account* account) {
 }
 
 void handle_compare_wallets(Account* account) {
-    std::string wallet_address1, wallet_address2;
+    std::string wallet_address1;
+    std::string wallet_address2;
     std::cout << "Enter first wallet address to compare: ";
     std::cin >> wallet_address1;
     std::cout << "Enter second wallet address to compare: ";
@@ -117,39 +118,39 @@ void menu_account_wallet() {
     auto new_wallet = std::make_unique<Wallet>("wallet_address_example", 0.0, conn);
     account->save_to_db();
 
+    using enum menu_options;
     while (true) {
         display_menu();
         menu_options option = get_user_choice();
-
         switch (option) {
-            case menu_options::account_info:
+            case account_info:
                 handle_account_info(account.get());
                 break;
-            case menu_options::add_wallet:
+            case add_wallet:
                 handle_add_wallet(account.get());
                 break;
-            case menu_options::delete_wallet:
+            case delete_wallet:
                 handle_delete_wallet(account.get());
                 break;
-            case menu_options::set_name:
+            case set_name:
                 handle_set_name(account.get());
                 break;
-            case menu_options::set_email:
+            case set_email:
                 handle_set_email(account.get());
                 break;
-            case menu_options::transfer_wallets:
+            case transfer_wallets:
                 handle_transfer_money(account.get());
                 break;
-            case menu_options::get_transactions:
+            case get_transactions:
                 handle_get_transactions(&transaction);
                 break;
-            case menu_options::merge_wallets:
+            case merge_wallets:
                 handle_merge_wallets(account.get());
                 break;
-            case menu_options::compare_wallets:
+            case compare_wallets:
                 handle_compare_wallets(account.get());
                 break;
-            case menu_options::end:
+            case end:
                 std::cout << "Exit" << std::endl;
                 return;
             default:
