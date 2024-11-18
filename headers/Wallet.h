@@ -10,11 +10,22 @@ private:
     double wallet_balance;
     pqxx::connection &conn;
 
-    friend Wallet &operator+(Wallet &wallet, double cryptocurrency);
+    friend Wallet &operator+(Wallet &wallet, double cryptocurrency) {
+        wallet.set_wallet_balance(wallet.get_wallet_balance() + cryptocurrency);
+        wallet.update_balance();
+        return wallet;
+    }
 
-    friend Wallet &operator-(Wallet &wallet, double cryptocurrency);
+    friend Wallet &operator-(Wallet &wallet, double cryptocurrency) {
+        wallet.set_wallet_balance(wallet.get_wallet_balance() - cryptocurrency);
+        wallet.update_balance();
+        return wallet;
+    }
 
-    friend std::ostream &operator<<(std::ostream &os, const Wallet &wallet);
+    friend std::ostream &operator<<(std::ostream &os, const Wallet &wallet) {
+        os << "Address: " << wallet.wallet_address << ", Balance: " << wallet.wallet_balance;
+        return os;
+    }
 
 public:
     Wallet(const std::string &wallet_address, double wallet_balance, pqxx::connection &conn);

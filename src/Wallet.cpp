@@ -3,7 +3,7 @@
 #include <random>
 
 Wallet::Wallet(const std::string &wallet_address, const double wallet_balance, pqxx::connection &conn)
-        : wallet_address(wallet_address), wallet_balance(wallet_balance), conn(conn) {
+    : wallet_address(wallet_address), wallet_balance(wallet_balance), conn(conn) {
 }
 
 void Wallet::set_wallet_address() {
@@ -31,23 +31,6 @@ double Wallet::get_wallet_balance() const {
     return wallet_balance;
 }
 
-Wallet& operator+(Wallet &wallet, double cryptocurrency) {
-    wallet.set_wallet_balance(wallet.get_wallet_balance() + cryptocurrency);
-    wallet.update_balance();
-    return wallet;
-}
-
-Wallet& operator-(Wallet &wallet, double cryptocurrency) {
-    wallet.set_wallet_balance(wallet.get_wallet_balance() - cryptocurrency);
-    wallet.update_balance();
-    return wallet;
-}
-
-std::ostream& operator<<(std::ostream& os, const Wallet& wallet) {
-    os << "Address: " << wallet.wallet_address << ", Balance: " << wallet.wallet_balance;
-    return os;
-}
-
 void Wallet::update_balance() {
     pqxx::work txn(conn);
     txn.exec_params("UPDATE wallet SET balance = $1 WHERE wallet_address = $2",
@@ -56,12 +39,12 @@ void Wallet::update_balance() {
     txn.commit();
 }
 
-bool get_wallet_by_address(const std::string& address, Wallet*& wallet,
-                           std::vector<std::unique_ptr<Wallet>>& wallets) {
+bool get_wallet_by_address(const std::string &address, Wallet *&wallet,
+                           std::vector<std::unique_ptr<Wallet> > &wallets) {
     auto wallet_it = std::ranges::find_if(wallets,
-        [&address](const std::unique_ptr<Wallet>& wallet) {
-            return wallet->get_wallet_address() == address;
-        });
+                                          [&address](const std::unique_ptr<Wallet> &wallet) {
+                                              return wallet->get_wallet_address() == address;
+                                          });
 
     if (wallet_it != wallets.end()) {
         wallet = wallet_it->get();
