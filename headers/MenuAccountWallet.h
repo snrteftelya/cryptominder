@@ -10,10 +10,10 @@ enum class menu_options {
     delete_wallet,
     set_name,
     set_email,
-    transfer_wallets,
+    transfer_money,
     get_transactions,
-    comp_balance_wallets,
-    compare_wallets
+    add_cryptocurrency_to_wallet,
+    delete_cryptocurrency_from_wallet
 };
 
 void menu_account_wallet();

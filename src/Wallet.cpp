@@ -31,22 +31,43 @@ double Wallet::get_wallet_balance() const {
     return wallet_balance;
 }
 
-bool get_wallets_by_address(const std::string &address1, const std::string &address2,
-                            Wallet*& wallet1, Wallet*& wallet2,
-                            std::vector<std::unique_ptr<Wallet>>& wallets) {
-    auto wallet1_it = std::ranges::find_if(wallets.begin(), wallets.end(),
-        [&address1](const std::unique_ptr<Wallet> &wallet) {
-            return wallet->get_wallet_address() == address1;
+Wallet& operator+(Wallet &wallet, double cryptocurrency) {
+    wallet.set_wallet_balance(wallet.get_wallet_balance() + cryptocurrency);
+    wallet.update_balance();
+    return wallet;
+}
+
+Wallet& operator-(Wallet &wallet, double cryptocurrency) {
+    wallet.set_wallet_balance(wallet.get_wallet_balance() - cryptocurrency);
+    wallet.update_balance();
+    return wallet;
+}
+
+std::ostream& operator<<(std::ostream& os, const Wallet& wallet) {
+    os << "Address: " << wallet.wallet_address << ", Balance: " << wallet.wallet_balance;
+    return os;
+}
+
+void Wallet::update_balance() {
+    pqxx::work txn(conn);
+    txn.exec_params("UPDATE wallet SET balance = $1 WHERE wallet_address = $2",
+                    wallet_balance,
+                    wallet_address);
+    txn.commit();
+}
+
+bool get_wallet_by_address(const std::string& address, Wallet*& wallet,
+                           std::vector<std::unique_ptr<Wallet>>& wallets) {
+    auto wallet_it = std::ranges::find_if(wallets,
+        [&address](const std::unique_ptr<Wallet>& wallet) {
+            return wallet->get_wallet_address() == address;
         });
-    auto wallet2_it = std::ranges::find_if(wallets.begin(), wallets.end(),
-        [&address2](const std::unique_ptr<Wallet> &wallet) {
-            return wallet->get_wallet_address() == address2;
-        });
-    if (wallet1_it != wallets.end() && wallet2_it != wallets.end()) {
-        wallet1 = wallet1_it->get();
-        wallet2 = wallet2_it->get();
+
+    if (wallet_it != wallets.end()) {
+        wallet = wallet_it->get();
         return true;
     } else {
+        wallet = nullptr;
         return false;
     }
 }

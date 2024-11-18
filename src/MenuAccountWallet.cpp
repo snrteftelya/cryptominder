@@ -8,8 +8,8 @@ void display_menu() {
     std::cout << "5) Set account email" << std::endl;
     std::cout << "6) Transfer money between two wallets" << std::endl;
     std::cout << "7) Get all transactions" << std::endl;
-    std::cout << "8) Compare two balance wallets" << std::endl;
-    std::cout << "9) Compare two wallets" << std::endl;
+    std::cout << "8) Top up wallet with money" << std::endl;
+    std::cout << "9) Withdraw money from wallet" << std::endl;
     std::cout << "0) Exit" << std::endl;
 }
 
@@ -20,40 +20,40 @@ menu_options get_user_choice() {
     return static_cast<menu_options>(choice);
 }
 
-void handle_account_info(Account* account) {
+void handler_account_info(Account *account) {
     account->load_from_db(1);
     account->display_account_info();
 }
 
-void handle_add_wallet(Account* account) {
+void handler_add_wallet(Account *account) {
     double wallet_balance;
     std::cout << "Enter wallet balance: ";
     std::cin >> wallet_balance;
     account->add_wallet(wallet_balance);
 }
 
-void handle_delete_wallet(Account* account) {
+void handler_delete_wallet(Account *account) {
     std::string wallet_address;
     std::cout << "Enter wallet address to delete: ";
     std::cin >> wallet_address;
     account->delete_wallet(wallet_address);
 }
 
-void handle_set_name(Account* account) {
+void handler_set_name(Account *account) {
     std::string new_name;
     std::cout << "Enter new account name: ";
     std::cin >> new_name;
     account->set_client_name(new_name);
 }
 
-void handle_set_email(Account* account) {
+void handler_set_email(Account *account) {
     std::string new_email;
     std::cout << "Enter new email: ";
     std::cin >> new_email;
     account->set_account_email(new_email);
 }
 
-void handle_transfer_money(Account* account) {
+void handler_transfer_money(Account *account) {
     std::string recipient_wallet_address;
     std::string sender_wallet_address;
     double sum;
@@ -66,51 +66,46 @@ void handle_transfer_money(Account* account) {
     account->transfer_money(sender_wallet_address, recipient_wallet_address, sum);
 }
 
-void handle_get_transactions(Transaction* transaction) {
+void handler_get_transactions(Transaction *transaction) {
     std::cout << "Here are the transactions:" << std::endl;
     transaction->get_transactions();
 }
 
-void compare_balance_wallets(Account* account) {
-    std::string wallet_address1;
-    std::string wallet_address2;
-    std::cout << "Enter first wallet address to compare balance: ";
-    std::cin >> wallet_address1;
-    std::cout << "Enter second wallet address to compare balance: ";
-    std::cin >> wallet_address2;
-    Wallet* wallet1 = nullptr;
-    Wallet* wallet2 = nullptr;
-    if (get_wallets_by_address(wallet_address1, wallet_address2, wallet1, wallet2, account->wallets)) {
-        bool is_bigger = *wallet1 > *wallet2;
-        if (is_bigger) std::cout << "Balance wallet1 > Balance wallet2" << std::endl;
-        else std::cout << "Balance wallet1 < Balance wallet2" << std::endl;
+void handler_add_cryptocurrency_to_wallet(Account *account) {
+    std::string wallet_address;
+    std::cout << "Enter wallet address: ";
+    std::cin >> wallet_address;
+    double balance_to_add;
+    std::cout << "How much money you need to top up:" << std::endl;
+    std::cin >> balance_to_add;
+    Wallet *wallet = nullptr;
+    if (get_wallet_by_address(wallet_address, wallet, account->wallets)) {
+        *wallet + balance_to_add;
+        std::cout << *wallet << std::endl;
     } else {
-        std::cout << "One or both wallets not found!" << std::endl;
+        std::cout << "Wallet not found!" << std::endl;
     }
 }
 
-void handle_compare_wallets(Account* account) {
-    std::string wallet_address1;
-    std::string wallet_address2;
-    std::cout << "Enter first wallet address to compare: ";
-    std::cin >> wallet_address1;
-    std::cout << "Enter second wallet address to compare: ";
-    std::cin >> wallet_address2;
-    Wallet* wallet1 = nullptr;
-    Wallet* wallet2 = nullptr;
-    if (get_wallets_by_address(wallet_address1, wallet_address2, wallet1, wallet2, account->wallets)) {
-        if (*wallet1 == *wallet2) {
-            std::cout << "The wallets are the same!" << std::endl;
-        } else {
-            std::cout << "The wallets are different!" << std::endl;
-        }
+void handler_delete_cryptocurrency_from_wallet(Account *account) {
+    std::string wallet_address;
+    std::cout << "Enter wallet address: ";
+    std::cin >> wallet_address;
+    double balance_to_delete;
+    std::cout << "How much money you need to withdraw:" << std::endl;
+    std::cin >> balance_to_delete;
+    Wallet *wallet = nullptr;
+    if (get_wallet_by_address(wallet_address, wallet, account->wallets)) {
+        *wallet - balance_to_delete;
+        std::cout << *wallet << std::endl;
     } else {
-        std::cout << "One or both wallets not found!" << std::endl;
+        std::cout << "Wallet not found!" << std::endl;
     }
 }
 
 void menu_account_wallet() {
-    std::string connectionString = "dbname=crypto user=crypto_owner password=I6XNyohUfBj8 host=ep-yellow-truth-a2dw0siz.eu-central-1.aws.neon.tech sslmode=require";
+    std::string connectionString =
+            "dbname=crypto user=crypto_owner password=I6XNyohUfBj8 host=ep-yellow-truth-a2dw0siz.eu-central-1.aws.neon.tech sslmode=require";
     pqxx::connection conn(connectionString);
     DatabaseSchema db(connectionString);
     db.create_tables();
@@ -124,31 +119,31 @@ void menu_account_wallet() {
         menu_options option = get_user_choice();
         switch (option) {
             case account_info:
-                handle_account_info(account.get());
+                handler_account_info(account.get());
                 break;
             case add_wallet:
-                handle_add_wallet(account.get());
+                handler_add_wallet(account.get());
                 break;
             case delete_wallet:
-                handle_delete_wallet(account.get());
+                handler_delete_wallet(account.get());
                 break;
             case set_name:
-                handle_set_name(account.get());
+                handler_set_name(account.get());
                 break;
             case set_email:
-                handle_set_email(account.get());
+                handler_set_email(account.get());
                 break;
-            case transfer_wallets:
-                handle_transfer_money(account.get());
+            case transfer_money:
+                handler_transfer_money(account.get());
                 break;
             case get_transactions:
-                handle_get_transactions(&transaction);
+                handler_get_transactions(&transaction);
                 break;
-            case comp_balance_wallets:
-                compare_balance_wallets(account.get());
+            case add_cryptocurrency_to_wallet:
+                handler_add_cryptocurrency_to_wallet(account.get());
                 break;
-            case compare_wallets:
-                handle_compare_wallets(account.get());
+            case delete_cryptocurrency_from_wallet:
+                handler_delete_cryptocurrency_from_wallet(account.get());
                 break;
             case end:
                 std::cout << "Exit" << std::endl;

@@ -2,12 +2,13 @@
 #include <iostream>
 #include <pqxx/pqxx>
 
-DatabaseSchema::DatabaseSchema(const std::string &connection_string) : C(connection_string) {}
+DatabaseSchema::DatabaseSchema(const std::string &connection_string) : C(connection_string) {
+}
 
 void DatabaseSchema::create_tables() {
-        pqxx::work W(C);
+    pqxx::work W(C);
 
-        std::string create_account_table = R"(
+    std::string create_account_table = R"(
             CREATE TABLE IF NOT EXISTS Account (
                 account_id SERIAL PRIMARY KEY,
                 username VARCHAR(16) NOT NULL,
@@ -17,7 +18,7 @@ void DatabaseSchema::create_tables() {
             );
         )";
 
-        std::string create_wallet_table = R"(
+    std::string create_wallet_table = R"(
             CREATE TABLE IF NOT EXISTS Wallet (
                 account_id INT REFERENCES Account(account_id) ON DELETE CASCADE,
                 wallet_address VARCHAR(30) UNIQUE NOT NULL,
@@ -27,7 +28,7 @@ void DatabaseSchema::create_tables() {
             );
         )";
 
-        std::string create_transactions_table = R"(
+    std::string create_transactions_table = R"(
             CREATE TABLE IF NOT EXISTS Transactions (
                 transaction_id SERIAL PRIMARY KEY,
                 sender_wallet_address VARCHAR(30) REFERENCES Wallet(wallet_address) ON DELETE CASCADE,
@@ -39,11 +40,11 @@ void DatabaseSchema::create_tables() {
             );
         )";
 
-        W.exec(create_account_table);
-        W.exec(create_wallet_table);
-        W.exec(create_transactions_table);
+    W.exec(create_account_table);
+    W.exec(create_wallet_table);
+    W.exec(create_transactions_table);
 
-        W.commit();
+    W.commit();
 
-        std::cout << "Tables are successfully created or exist." << std::endl;
+    std::cout << "Tables are successfully created or exist." << std::endl;
 }
