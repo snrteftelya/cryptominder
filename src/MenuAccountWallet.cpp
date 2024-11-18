@@ -8,7 +8,7 @@ void display_menu() {
     std::cout << "5) Set account email" << std::endl;
     std::cout << "6) Transfer money between two wallets" << std::endl;
     std::cout << "7) Get all transactions" << std::endl;
-    std::cout << "8) Merge two wallets" << std::endl;
+    std::cout << "8) Compare two balance wallets" << std::endl;
     std::cout << "9) Compare two wallets" << std::endl;
     std::cout << "0) Exit" << std::endl;
 }
@@ -71,18 +71,19 @@ void handle_get_transactions(Transaction* transaction) {
     transaction->get_transactions();
 }
 
-void handle_merge_wallets(Account* account) {
+void compare_balance_wallets(Account* account) {
     std::string wallet_address1;
     std::string wallet_address2;
-    std::cout << "Enter first wallet address to merge: ";
+    std::cout << "Enter first wallet address to compare balance: ";
     std::cin >> wallet_address1;
-    std::cout << "Enter second wallet address to merge: ";
+    std::cout << "Enter second wallet address to compare balance: ";
     std::cin >> wallet_address2;
     Wallet* wallet1 = nullptr;
     Wallet* wallet2 = nullptr;
     if (get_wallets_by_address(wallet_address1, wallet_address2, wallet1, wallet2, account->wallets)) {
-        Wallet merged_wallet = *wallet1 + *wallet2;
-        std::cout << "Merged wallet: " << merged_wallet << std::endl;
+        bool is_bigger = *wallet1 > *wallet2;
+        if (is_bigger) std::cout << "Balance wallet1 > Balance wallet2" << std::endl;
+        else std::cout << "Balance wallet1 < Balance wallet2" << std::endl;
     } else {
         std::cout << "One or both wallets not found!" << std::endl;
     }
@@ -143,8 +144,8 @@ void menu_account_wallet() {
             case get_transactions:
                 handle_get_transactions(&transaction);
                 break;
-            case merge_wallets:
-                handle_merge_wallets(account.get());
+            case comp_balance_wallets:
+                compare_balance_wallets(account.get());
                 break;
             case compare_wallets:
                 handle_compare_wallets(account.get());

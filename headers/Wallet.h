@@ -11,9 +11,8 @@ private:
     friend bool operator==(const Wallet &lhs, const Wallet &rhs) {
         return (lhs.wallet_address == rhs.wallet_address && lhs.wallet_balance == rhs.wallet_balance);
     }
-    friend Wallet operator+(const Wallet& lhs, const Wallet& rhs) {
-        double new_balance = lhs.wallet_balance + rhs.wallet_balance;
-        return Wallet(lhs.wallet_address, new_balance, lhs.conn);
+    friend bool operator>(const Wallet& lhs, const Wallet& rhs) {
+        return (lhs.wallet_balance > rhs.wallet_balance);
     }
     friend std::ostream& operator<<(std::ostream& os, const Wallet& wallet) {
         os << "Address: " << wallet.wallet_address << ", Balance: " << wallet.wallet_balance;

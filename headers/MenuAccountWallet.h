@@ -12,7 +12,7 @@ enum class menu_options {
     set_email,
     transfer_wallets,
     get_transactions,
-    merge_wallets,
+    comp_balance_wallets,
     compare_wallets
 };
 
