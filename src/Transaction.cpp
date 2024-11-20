@@ -20,9 +20,10 @@ void Transaction::add_transaction(const std::string_view &sender_wallet_address,
     std::cout << "Transaction w ID: " << transaction_id << std::endl;
 }
 
-void Transaction::get_transactions() {
+void Transaction::get_transactions(std::string_view wallet_address) {
     pqxx::nontransaction N(C);
-    std::string query = "SELECT * FROM transactions;";
+    std::string query = std::format("SELECT * FROM transactions WHERE sender_wallet_address = '{}' OR receiver_wallet_address = '{}';",
+    wallet_address, wallet_address);
     pqxx::result R = N.exec(query);
     for (const auto &row: R) {
         std::cout << "--------------------------------------------" << std::endl;
