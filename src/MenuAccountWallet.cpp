@@ -66,11 +66,10 @@ void handler_transfer_money(Account *account) {
     account->transfer_money(sender_wallet_address, recipient_wallet_address, sum);
 }
 
-void handler_get_transactions(Transaction *transaction, Account *account) {
+void handler_get_transactions(Transaction *transaction) {
     std::string wallet_address;
     std::cout << "Enter wallet address: ";
     std::cin >> wallet_address;
-    Wallet *wallet = nullptr;
     std::cout << "Here are the transactions for your wallet:" << std::endl;
     transaction->get_transactions(wallet_address);
 }
@@ -141,7 +140,7 @@ void menu_account_wallet() {
                 handler_transfer_money(account.get());
                 break;
             case get_transactions:
-                handler_get_transactions(&transaction, account.get());
+                handler_get_transactions(&transaction);
                 break;
             case add_cryptocurrency_to_wallet:
                 handler_add_cryptocurrency_to_wallet(account.get());
