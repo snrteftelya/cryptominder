@@ -39,4 +39,8 @@ public:
     void load_from_db(int account_id) override;
 
     void transfer_money(const std::string &from_wallet, const std::string &to_wallet, double amount) override;
+
+    pqxx::result get_wallets_from_db(int account_id);
+
+    pqxx::row get_wallet_from_db(int account_id, std::string_view wallet_address);
 };
