@@ -169,7 +169,7 @@ pqxx::row Account::get_wallet_from_db(int account_id, std::string_view wallet_ad
         "SELECT wallet_address, balance FROM wallet WHERE account_id = $1 AND wallet_address = $2", account_id, wallet_address
     );
     if (wallet_result.empty()) {
-        throw std::runtime_error("No wallet found for the given account ID.");
+        std::cout << "No wallet found for the given account ID.";
     }
     return wallet_result[0];
 }
