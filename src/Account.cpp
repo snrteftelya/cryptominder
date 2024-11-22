@@ -29,7 +29,6 @@ void Account::load_from_db(int account_id) {
                 row["wallet_address"].c_str(), row["balance"].as<double>(), conn
             ));
         }
-        std::cout << "Account and wallets loaded from database." << std::endl;
     } else {
         std::cerr << "Account not found in the database." << std::endl;
     }

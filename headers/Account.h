@@ -32,8 +32,6 @@ public:
 
     bool delete_wallet(const std::string &wallet_address);
 
-    Wallet *get_wallet(const std::string &wallet_address) const;
-
     void save_to_db() const override;
 
     void load_from_db(int account_id) override;
