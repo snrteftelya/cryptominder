@@ -1,0 +1,2 @@
+set(__QT_DEPLOY_TARGET_cryptominder_FILE /Users/snrteftelya/Desktop/cryptominder/cryptominder/build/Qt_6_8_0_for_macOS-Debug/cryptominder.app/Contents/MacOS/cryptominder)
+set(__QT_DEPLOY_TARGET_cryptominder_TYPE EXECUTABLE)
