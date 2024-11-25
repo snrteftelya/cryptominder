@@ -13,33 +13,27 @@ find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
 set(PROJECT_SOURCES
-        main.cpp
-        headers/Iterator.h
-
-
+        src/main.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(cryptominder
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-        cryptominder.h cryptominder.cpp cryptominder.ui
-        receive.h receive.cpp receive.ui
-        send.h send.cpp send.ui
-        addwallet.h addwallet.cpp addwallet.ui
-        deletewallet.h deletewallet.cpp deletewallet.ui
-        src/Account.cpp
-        headers/Account.h
-        src/Wallet.cpp
-        headers/Wallet.h
-        src/DataBaseSchema.cpp
-        headers/DataBaseSchema.h
-        src/Transaction.cpp
-        headers/Transaction.h
+            headers/cryptominder.h src/cryptominder.cpp src/ui/cryptominder.ui
+            headers/receive.h src/receive.cpp src/ui/receive.ui
+            headers/send.h src/send.cpp src/ui/send.ui
+            headers/addwallet.h src/addwallet.cpp src/ui/addwallet.ui
+            headers/deletewallet.h src/deletewallet.cpp src/ui/deletewallet.ui
+        headers/Account.h src/Account.cpp
+        headers/Wallet.h src/Wallet.cpp
+        headers/DataBaseSchema.h src/DataBaseSchema.cpp
+        headers/Transaction.h src/Transaction.cpp
         headers/IPersistable.h
         headers/ITransferable.h
-        basedb.h
+            headers/basedb.h
         headers/UpdVector.h
+        headers/Iterator.h
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET cryptominder APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
@@ -64,6 +58,7 @@ target_link_libraries(cryptominder PRIVATE /opt/homebrew/Cellar/libpqxx/7.9.2/li
 target_link_libraries(cryptominder PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 target_include_directories(cryptominder PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/headers")
 target_include_directories(cryptominder PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src")
+target_include_directories(cryptominder PRIVATE "src/ui")
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
 # explicit, fixed bundle identifier manually though.

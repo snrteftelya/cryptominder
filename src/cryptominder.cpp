@@ -1,5 +1,4 @@
 #include "cryptominder.h"
-#include "ui/ui_cryptominder.h"
 #include "receive.h"
 #include "send.h"
 #include "addwallet.h"
@@ -10,7 +9,7 @@
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QListWidget>
-
+#include "ui/ui_cryptominder.h"
 
 Cryptominder::Cryptominder(QWidget *parent)
     : QMainWindow(parent)
