@@ -1,5 +1,5 @@
 #include "deletewallet.h"
-#include "ui_deletewallet.h"
+#include "ui/ui_deletewallet.h"
 
 DeleteWallet::DeleteWallet(QWidget *parent)
     : QDialog(parent)

@@ -1,5 +1,5 @@
 #include "send.h"
-#include "ui_send.h"
+#include "ui/ui_send.h"
 
 Send::Send(QWidget *parent)
     : QDialog(parent)

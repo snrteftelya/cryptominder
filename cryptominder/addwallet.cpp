@@ -1,5 +1,5 @@
 #include "addwallet.h"
-#include "ui_addwallet.h"
+#include "ui/ui_addwallet.h"
 
 AddWallet::AddWallet(QWidget *parent)
     : QDialog(parent)

@@ -1,5 +1,5 @@
 #include "receive.h"
-#include "ui_receive.h"
+#include "ui/ui_receive.h"
 #include <QClipboard>
 #include <QApplication>
 

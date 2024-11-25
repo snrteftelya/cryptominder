@@ -12,7 +12,7 @@ protected:
 
 public:
     BaseDatabase() {
-        conn = new pqxx::connection("dbname=crypto user=crypto_owner password=I6XNyohUfBj8 host=ep-yellow-truth-a2dw0siz.eu-central-1.aws.neon.tech sslmode=require");  // Инициализация соединения
+        conn = new pqxx::connection("dbname=crypto user=crypto_owner password=I6XNyohUfBj8 host=ep-yellow-truth-a2dw0siz.eu-central-1.aws.neon.tech sslmode=require");
     }
 
     virtual ~BaseDatabase() {

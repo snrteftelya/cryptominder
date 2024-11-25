@@ -32,8 +32,6 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         headers/Account.h
         src/Wallet.cpp
         headers/Wallet.h
-        src/MenuAccountWallet.cpp
-        headers/MenuAccountWallet.h
         src/DataBaseSchema.cpp
         headers/DataBaseSchema.h
         src/Transaction.cpp

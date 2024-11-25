@@ -1,5 +1,5 @@
 #include "cryptominder.h"
-#include "ui_cryptominder.h"
+#include "ui/ui_cryptominder.h"
 #include "receive.h"
 #include "send.h"
 #include "addwallet.h"
