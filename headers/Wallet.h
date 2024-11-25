@@ -44,5 +44,5 @@ public:
 };
 
 bool get_wallet_by_address(const std::string_view &address, Wallet *&wallet,
-                           UpdVector<std::unique_ptr<Wallet>> &wallets);
+                           const UpdVector<std::unique_ptr<Wallet>> &wallets);
 

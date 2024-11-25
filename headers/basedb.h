@@ -15,9 +15,7 @@ public:
         conn = new pqxx::connection("dbname=crypto user=crypto_owner password=I6XNyohUfBj8 host=ep-yellow-truth-a2dw0siz.eu-central-1.aws.neon.tech sslmode=require");
     }
 
-    virtual ~BaseDatabase() {
-        delete conn;
-    }
+    virtual ~BaseDatabase() = default;
 
     void createAccount(const std::string& name, const std::string& username, const std::string& password) {
         account = std::make_unique<Account>(name, username, password, *conn);

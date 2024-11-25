@@ -40,7 +40,7 @@ void Wallet::update_balance() {
 }
 
 bool get_wallet_by_address(const std::string_view &address, Wallet *&wallet,
-                           UpdVector<std::unique_ptr<Wallet>> &wallets) {
+                           const UpdVector<std::unique_ptr<Wallet>> &wallets) {
     for (const auto& unique_wallet : wallets) {
         if (unique_wallet && unique_wallet->get()->get_wallet_address() == address) {
             wallet = unique_wallet->get();
