@@ -14,7 +14,7 @@ class Cryptominder : public QMainWindow, public BaseDatabase
 
 public:
     explicit Cryptominder(QWidget *parent = nullptr);
-    ~Cryptominder();
+    ~Cryptominder() final;
 
 private slots:
     void on_receive_button_clicked();

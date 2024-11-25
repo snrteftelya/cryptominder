@@ -14,7 +14,7 @@ class AddWallet : public QDialog, public BaseDatabase
 
 public:
     explicit AddWallet(QWidget *parent = nullptr);
-    ~AddWallet();
+    ~AddWallet() final;
 
 private slots:
     void on_pushButton_clicked();

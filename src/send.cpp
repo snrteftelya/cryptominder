@@ -16,10 +16,7 @@ Send::Send(QWidget *parent)
     }
 }
 
-Send::~Send()
-{
-    delete ui;
-}
+Send::~Send() = default;
 
 void Send::on_send_wallet_button_clicked()
 {

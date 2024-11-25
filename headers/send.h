@@ -14,7 +14,7 @@ class Send : public QDialog, public BaseDatabase
 
 public:
     explicit Send(QWidget *parent = nullptr);
-    ~Send();
+    ~Send() final;
     void receiveData(const QString &data);
 
 private slots:

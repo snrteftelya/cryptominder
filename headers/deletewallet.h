@@ -14,7 +14,7 @@ class DeleteWallet : public QDialog, public BaseDatabase
 
 public:
     explicit DeleteWallet(QWidget *parent = nullptr);
-    ~DeleteWallet();
+    ~DeleteWallet() final;
     void receiveData(const QString &data);
 
 private slots:

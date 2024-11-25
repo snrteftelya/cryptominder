@@ -39,15 +39,20 @@ void Wallet::update_balance() {
     txn.commit();
 }
 
-bool get_wallet_by_address(const std::string &address, Wallet *&wallet,
+bool get_wallet_by_address(const std::string_view &address, Wallet *&wallet,
                            UpdVector<std::unique_ptr<Wallet>> &wallets) {
-    for (auto it = wallets.begin(); it != wallets.end(); ++it) {
-        if ((*it)->get()->get_wallet_address() == address) {
-            wallet = it->get()->get();
+    for (const auto& unique_wallet : wallets) {
+        if (unique_wallet && unique_wallet->get()->get_wallet_address() == address) {
+            wallet = unique_wallet->get();
             return true;
         }
     }
     wallet = nullptr;
     return false;
 }
+
+
+
+
+
 

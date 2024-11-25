@@ -16,10 +16,7 @@ DeleteWallet::DeleteWallet(QWidget *parent)
     }
 }
 
-DeleteWallet::~DeleteWallet()
-{
-    delete ui;
-}
+DeleteWallet::~DeleteWallet() = default;
 
 void DeleteWallet::on_delete_wallet_button_clicked()
 {

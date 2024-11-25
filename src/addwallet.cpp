@@ -11,10 +11,7 @@ AddWallet::AddWallet(QWidget *parent)
     account->load_from_db(1);
 }
 
-AddWallet::~AddWallet()
-{
-    delete ui;
-}
+AddWallet::~AddWallet() = default;
 
 void AddWallet::on_pushButton_clicked()
 {

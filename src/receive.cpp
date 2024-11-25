@@ -11,10 +11,7 @@ Receive::Receive(QWidget *parent)
     connect(ui->copyButton, &QPushButton::clicked, this, &Receive::on_copyButton_clicked);
 }
 
-Receive::~Receive()
-{
-    delete ui;
-}
+Receive::~Receive() = default;
 
 void Receive::on_copyButton_clicked()
 {

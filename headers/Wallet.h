@@ -43,5 +43,6 @@ public:
     void update_balance();
 };
 
-bool get_wallet_by_address(const std::string &address, Wallet *&wallet,
-                         UpdVector<std::unique_ptr<Wallet> > &wallets);
+bool get_wallet_by_address(const std::string_view &address, Wallet *&wallet,
+                           UpdVector<std::unique_ptr<Wallet>> &wallets);
+

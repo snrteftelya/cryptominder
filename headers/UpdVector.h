@@ -53,11 +53,11 @@ public:
 
 template <typename T>
 bool contains(const UpdVector<T>& container, const T& value) {
-    for (auto it = container.begin(); it != container.end(); ++it) {
-        if (**it == value) {
+    std::ranges::for_each(container, [&](const auto& elem) {
+        if (elem == value) {
             return true;
         }
-    }
+    });
     return false;
 }
 
