@@ -14,7 +14,7 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
 set(PROJECT_SOURCES
         main.cpp
-
+        headers/Iterator.h
 
 
 )
@@ -39,6 +39,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         headers/IPersistable.h
         headers/ITransferable.h
         basedb.h
+        headers/UpdVector.h
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET cryptominder APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

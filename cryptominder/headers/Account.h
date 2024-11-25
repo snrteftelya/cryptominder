@@ -1,11 +1,12 @@
 #include <string>
-#include <vector>
 #include <memory>
 #include <pqxx/pqxx>
 #include "Wallet.h"
 #include "Transaction.h"
 #include "IPersistable.h"
 #include "ITransferable.h"
+#include "UpdVector.h"
+
 
 class Account : public IPersistable, public ITransferable {
 private:
@@ -15,7 +16,7 @@ private:
     pqxx::connection &conn;
 
 public:
-    std::vector<std::unique_ptr<Wallet> > wallets;
+    UpdVector<std::unique_ptr<Wallet>> wallets;
 
     Account(const std::string &username, const std::string &email, const std::string &password_hash,
             pqxx::connection &conn);

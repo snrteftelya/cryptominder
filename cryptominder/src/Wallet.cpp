@@ -1,5 +1,5 @@
 #include "Wallet.h"
-
+#include <pqxx/pqxx>
 #include <random>
 
 Wallet::Wallet(const std::string &wallet_address, const double wallet_balance, pqxx::connection &conn)
@@ -40,17 +40,14 @@ void Wallet::update_balance() {
 }
 
 bool get_wallet_by_address(const std::string &address, Wallet *&wallet,
-                           std::vector<std::unique_ptr<Wallet> > &wallets) {
-    auto wallet_it = std::ranges::find_if(wallets,
-                                          [&address](const std::unique_ptr<Wallet> &wallet) {
-                                              return wallet->get_wallet_address() == address;
-                                          });
-
-    if (wallet_it != wallets.end()) {
-        wallet = wallet_it->get();
-        return true;
-    } else {
-        wallet = nullptr;
-        return false;
+                           UpdVector<std::unique_ptr<Wallet>> &wallets) {
+    for (auto it = wallets.begin(); it != wallets.end(); ++it) {
+        if ((*it)->get()->get_wallet_address() == address) {
+            wallet = it->get()->get();
+            return true;
+        }
     }
+    wallet = nullptr;
+    return false;
 }
+

@@ -1,7 +1,7 @@
 #include <string>
 #include <pqxx/pqxx>
 #include <iostream>
-#include <vector>
+#include "UpdVector.h"
 #include <memory>
 
 class Wallet {
@@ -44,4 +44,4 @@ public:
 };
 
 bool get_wallet_by_address(const std::string &address, Wallet *&wallet,
-                           std::vector<std::unique_ptr<Wallet> > &wallets);
+                         UpdVector<std::unique_ptr<Wallet> > &wallets);
