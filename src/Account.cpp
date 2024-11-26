@@ -98,7 +98,7 @@ void Account::add_wallet(double initial_balance) {
 
 bool Account::delete_wallet(const std::string &wallet_address) {
     bool wallet_found = false;
-    UpdIterator<std::unique_ptr<Wallet>> it_to_delete = wallets.end();
+    auto it_to_delete = wallets.end();
 
     for (auto it = wallets.begin(); it != wallets.end(); ++it) {
         if ((*it)->get_wallet_address() == wallet_address) {

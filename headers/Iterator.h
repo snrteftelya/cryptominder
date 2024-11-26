@@ -35,10 +35,6 @@ public:
 
     bool operator==(const UpdIterator& other) const = default;
 
-    bool operator!=(const UpdIterator& other) const {
-        return !(*this == other);
-    }
-
     friend ptrdiff_t operator-(const UpdIterator& lhs, const UpdIterator& rhs) {
         return lhs.current - rhs.current;
     }
