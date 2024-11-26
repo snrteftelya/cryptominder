@@ -1,52 +1,39 @@
-#ifndef ITERATOR_H
-#define ITERATOR_H
-
-#include <vector>
-
 template <typename T>
-class Iterator {
+class UpdIterator {
+private:
+    T* current;
+
 public:
-    explicit Iterator(typename std::vector<T>::iterator it) : it(it), is_const(false) {}
+    using value_type = T;
+    using pointer = T*;
+    using reference = T&;
 
-    explicit Iterator(typename std::vector<T>::const_iterator it) : it_const(it), is_const(true) {}
+    explicit UpdIterator(pointer ptr) : current(ptr) {}
 
-    T& operator*() { return is_const ? const_cast<T&>(*it_const) : *it; }
-    const T& operator*() const { return *it_const; }
+    reference operator*() const {
+        return *current;
+    }
 
-    T* operator->() { return is_const ? const_cast<T*>(&(*it_const)) : &(*it); }
-    const T* operator->() const { return &(*it_const); }
+    pointer operator->() {
+        return current;
+    }
 
-    Iterator& operator++() {
-        if (is_const) {
-            ++it_const;
-        } else {
-            ++it;
-        }
+    UpdIterator& operator++() {
+        ++current;
         return *this;
     }
 
-    Iterator operator++(int) {
-        Iterator temp = *this;
-        if (is_const) {
-            ++it_const;
-        } else {
-            ++it;
-        }
+    UpdIterator operator++(int) {
+        UpdIterator temp = *this;
+        ++current;
         return temp;
     }
 
-    bool operator==(const Iterator& other) const {
-        return is_const ? (it_const == other.it_const) : (it == other.it);
+    bool operator==(const UpdIterator& other) const {
+        return current == other.current;
     }
 
-    bool operator!=(const Iterator& other) const {
-        return is_const ? (it_const != other.it_const) : (it != other.it);
+    bool operator!=(const UpdIterator& other) const {
+        return current != other.current;
     }
-
-private:
-    typename std::vector<T>::iterator it;
-    typename std::vector<T>::const_iterator it_const;
-    bool is_const = false;
 };
-
-#endif // ITERATOR_H

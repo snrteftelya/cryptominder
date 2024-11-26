@@ -153,8 +153,3 @@ void Cryptominder::populateTransactionList() {
         ui->transactionTable->setItem(i, 2, new QTableWidgetItem(QString::number(t.amount, 'f', 2)));
     }
 }
-
-
-
-
-

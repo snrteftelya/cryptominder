@@ -1,36 +1,39 @@
-#ifndef UPD_VECTOR_H
-#define UPD_VECTOR_H
-
+#ifndef UPDVECTOR_H
+#define UPDVECTOR_H
 #include <vector>
-#include <memory>
+#include <algorithm>
+#include <stdexcept>
 
 template <typename T>
 class UpdVector {
 private:
-    std::vector<std::unique_ptr<T>> data;
+    std::vector<T> data;
 
 public:
-    void add(std::unique_ptr<T> element) {
-        data.push_back(std::move(element));
+    using iterator = typename std::vector<T>::iterator;
+    using const_iterator = typename std::vector<T>::const_iterator;
+
+    void add(T item) {
+        data.push_back(std::move(item));
     }
 
-    void remove(typename std::vector<std::unique_ptr<T>>::iterator it) {
+    void remove(iterator it) {
         data.erase(it);
     }
 
-    typename std::vector<std::unique_ptr<T>>::iterator begin() {
+    iterator begin() {
         return data.begin();
     }
 
-    typename std::vector<std::unique_ptr<T>>::iterator end() {
+    const_iterator begin() const {
+        return data.begin();
+    }
+
+    iterator end() {
         return data.end();
     }
 
-    typename std::vector<std::unique_ptr<T>>::const_iterator begin() const {
-        return data.begin();
-    }
-
-    typename std::vector<std::unique_ptr<T>>::const_iterator end() const {
+    const_iterator end() const {
         return data.end();
     }
 
@@ -42,12 +45,12 @@ public:
         return data.size();
     }
 
-    T& operator[](size_t index) {
-        return *data[index];
+    T& at(size_t index) {
+        return data.at(index);
     }
 
-    const T& operator[](size_t index) const {
-        return *data[index];
+    const T& at(size_t index) const {
+        return data.at(index);
     }
 };
 
@@ -61,4 +64,4 @@ bool contains(const UpdVector<T>& container, const T& value) {
     return false;
 }
 
-#endif // UPD_VECTOR_H
+#endif // UPDVECTOR_H

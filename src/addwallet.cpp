@@ -21,4 +21,3 @@ void AddWallet::on_pushButton_clicked()
     emit walletAdded();
     accept();
 }
-

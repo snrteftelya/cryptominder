@@ -1,12 +1,11 @@
 #include <string>
+#include "UpdVector.h"
 #include <memory>
 #include <pqxx/pqxx>
 #include "Wallet.h"
 #include "Transaction.h"
 #include "IPersistable.h"
 #include "ITransferable.h"
-#include "UpdVector.h"
-
 
 class Account : public IPersistable, public ITransferable {
 private:

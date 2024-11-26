@@ -36,4 +36,3 @@ void Send::on_send_wallet_button_clicked()
 void Send::receiveData(const QString &data) {
     ui->comboBox->setCurrentText(data);
 }
-

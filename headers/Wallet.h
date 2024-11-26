@@ -1,8 +1,8 @@
 #include <string>
 #include <pqxx/pqxx>
 #include <iostream>
-#include "UpdVector.h"
 #include <memory>
+#include "UpdVector.h"
 
 class Wallet {
 private:
@@ -43,6 +43,4 @@ public:
     void update_balance();
 };
 
-bool get_wallet_by_address(const std::string_view &address, Wallet *&wallet,
-                           const UpdVector<std::unique_ptr<Wallet>> &wallets);
-
+bool get_wallet_by_address(const std::string &address, Wallet *&wallet, UpdVector<std::unique_ptr<Wallet>> &wallets);

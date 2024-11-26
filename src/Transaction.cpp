@@ -13,7 +13,7 @@ void Transaction::add_transaction(const std::string_view &sender_wallet_address,
         "INSERT INTO transactions (sender_wallet_address, receiver_wallet_address, amount, transaction_fee) "
         "VALUES ('{}', '{}', {}, {}) RETURNING transaction_id;",
         sender_wallet_address, receiver_wallet_address, amount, transaction_fee
-    );
+        );
     pqxx::result R = W.exec(query);
     int transaction_id = R[0][0].as<int>();
     W.commit();
@@ -24,7 +24,7 @@ std::vector<TransactionData> Transaction::get_transactions(std::string_view wall
     pqxx::nontransaction N(C);
     std::vector<TransactionData> transactions;
     std::string query = std::format("SELECT * FROM transactions WHERE sender_wallet_address = '{}' OR receiver_wallet_address = '{}';",
-    wallet_address, wallet_address);
+                                    wallet_address, wallet_address);
     pqxx::result R = N.exec(query);
     for (const auto &row : R) {
         TransactionData transaction{

@@ -1,5 +1,5 @@
 #include "Wallet.h"
-#include <pqxx/pqxx>
+#include "UpdVector.h"
 #include <random>
 
 Wallet::Wallet(const std::string &wallet_address, const double wallet_balance, pqxx::connection &conn)
@@ -39,20 +39,18 @@ void Wallet::update_balance() {
     txn.commit();
 }
 
-bool get_wallet_by_address(const std::string_view &address, Wallet *&wallet,
-                           const UpdVector<std::unique_ptr<Wallet>> &wallets) {
-    for (const auto& unique_wallet : wallets) {
-        if (unique_wallet && unique_wallet->get()->get_wallet_address() == address) {
-            wallet = unique_wallet->get();
-            return true;
-        }
+bool get_wallet_by_address(const std::string &address, Wallet *&wallet, UpdVector<std::unique_ptr<Wallet>> &wallets) {
+    auto wallet_it = std::find_if(wallets.begin(), wallets.end(),
+                                  [&address](const std::unique_ptr<Wallet> &wallet) {
+                                      return wallet->get_wallet_address() == address;
+                                  });
+
+    if (wallet_it != wallets.end()) {
+        wallet = wallet_it->get();
+        return true;
+    } else {
+        wallet = nullptr;
+        return false;
     }
-    wallet = nullptr;
-    return false;
 }
-
-
-
-
-
 
