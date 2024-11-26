@@ -33,16 +33,14 @@ public:
         return temp;
     }
 
-    bool operator==(const UpdIterator& other) const {
-        return current == other.current;
-    }
+    bool operator==(const UpdIterator& other) const = default;
 
     bool operator!=(const UpdIterator& other) const {
-        return current != other.current;
+        return !(*this == other);
     }
 
-    ptrdiff_t operator-(const UpdIterator& other) const {
-        return current - other.current;
+    friend ptrdiff_t operator-(const UpdIterator& lhs, const UpdIterator& rhs) {
+        return lhs.current - rhs.current;
     }
 };
 

@@ -97,12 +97,19 @@ void Account::add_wallet(double initial_balance) {
 }
 
 bool Account::delete_wallet(const std::string &wallet_address) {
-    auto it = std::find_if(wallets.begin(), wallets.end(),
-                           [&wallet_address](const std::unique_ptr<Wallet> &wallet) {
-                               return wallet->get_wallet_address() == wallet_address;
-                           });
-    if (it != wallets.end()) {
-        wallets.remove(it);
+    bool wallet_found = false;
+    UpdIterator<std::unique_ptr<Wallet>> it_to_delete = wallets.end();
+
+    for (auto it = wallets.begin(); it != wallets.end(); ++it) {
+        if ((*it)->get_wallet_address() == wallet_address) {
+            it_to_delete = it;
+            wallet_found = true;
+            break;
+        }
+    }
+
+    if (wallet_found) {
+        wallets.remove(it_to_delete);
         pqxx::work txn(conn);
         txn.exec_params("DELETE FROM wallet WHERE wallet_address = $1", wallet_address);
         txn.commit();
@@ -113,9 +120,6 @@ bool Account::delete_wallet(const std::string &wallet_address) {
         return false;
     }
 }
-
-
-
 
 void Account::transfer_money(const std::string &from_wallet, const std::string &to_wallet, double amount) {
     if (amount <= 0) {
