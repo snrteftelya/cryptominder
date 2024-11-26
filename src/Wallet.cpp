@@ -40,17 +40,12 @@ void Wallet::update_balance() {
 }
 
 bool get_wallet_by_address(const std::string &address, Wallet *&wallet, UpdVector<std::unique_ptr<Wallet>> &wallets) {
-    auto wallet_it = std::find_if(wallets.begin(), wallets.end(),
-                                  [&address](const std::unique_ptr<Wallet> &wallet) {
-                                      return wallet->get_wallet_address() == address;
-                                  });
-
-    if (wallet_it != wallets.end()) {
-        wallet = wallet_it->get();
-        return true;
-    } else {
-        wallet = nullptr;
-        return false;
-    }
+    wallet = nullptr;
+    for_each(wallets, [&address, &wallet](const std::unique_ptr<Wallet> &w) {
+        if (w->get_wallet_address() == address) {
+            wallet = w.get();
+        }
+    });
+    return wallet != nullptr;
 }
 

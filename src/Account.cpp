@@ -72,17 +72,21 @@ void Account::add_wallet(double initial_balance) {
     wallet->set_wallet_address();
     std::string wallet_address = wallet->get_wallet_address();
 
-    auto it = std::ranges::find_if(wallets.begin(), wallets.end(), [&wallet_address](const std::unique_ptr<Wallet> &w) {
-        return w->get_wallet_address() == wallet_address;
+    bool wallet_exists = false;
+    for_each(wallets, [&wallet_address, &wallet_exists](const std::unique_ptr<Wallet> &w) {
+        if (w->get_wallet_address() == wallet_address) {
+            wallet_exists = true;
+        }
     });
 
-    if (it != wallets.end()) {
+    if (wallet_exists) {
         std::cerr << "Wallet with this address already exists!" << std::endl;
         return;
     }
 
     wallet->set_wallet_balance(initial_balance);
     wallets.add(std::move(wallet));
+
     pqxx::work txn(conn);
     txn.exec_params(
         "INSERT INTO wallet (account_id, wallet_address, currency, balance, created_at) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP)",
@@ -93,23 +97,24 @@ void Account::add_wallet(double initial_balance) {
 }
 
 bool Account::delete_wallet(const std::string &wallet_address) {
-    auto it = std::ranges::find_if(wallets.begin(), wallets.end(),
-                                   [&wallet_address](const std::unique_ptr<Wallet> &wallet) {
-                                       return wallet->get_wallet_address() == wallet_address;
-                                   });
-
-    if (it == wallets.end()) {
+    auto it = std::find_if(wallets.begin(), wallets.end(),
+                           [&wallet_address](const std::unique_ptr<Wallet> &wallet) {
+                               return wallet->get_wallet_address() == wallet_address;
+                           });
+    if (it != wallets.end()) {
+        wallets.remove(it);
+        pqxx::work txn(conn);
+        txn.exec_params("DELETE FROM wallet WHERE wallet_address = $1", wallet_address);
+        txn.commit();
+        std::cout << "Wallet deleted successfully." << std::endl;
+        return true;
+    } else {
         std::cerr << "Wallet not found." << std::endl;
         return false;
     }
-
-    wallets.remove(it); // Удаляем по итератору
-    pqxx::work txn(conn);
-    txn.exec_params("DELETE FROM wallet WHERE wallet_address = $1", wallet_address);
-    txn.commit();
-    std::cout << "Wallet deleted successfully." << std::endl;
-    return true;
 }
+
+
 
 
 void Account::transfer_money(const std::string &from_wallet, const std::string &to_wallet, double amount) {
@@ -118,23 +123,25 @@ void Account::transfer_money(const std::string &from_wallet, const std::string &
         return;
     }
 
-    auto sender_it = std::ranges::find_if(wallets.begin(), wallets.end(),
-                                          [&from_wallet](const std::unique_ptr<Wallet> &wallet) {
-                                              return wallet->get_wallet_address() == from_wallet;
-                                          });
+    Wallet *sender = nullptr;
+    Wallet *receiver = nullptr;
 
-    auto receiver_it = std::ranges::find_if(wallets.begin(), wallets.end(),
-                                            [&to_wallet](const std::unique_ptr<Wallet> &wallet) {
-                                                return wallet->get_wallet_address() == to_wallet;
-                                            });
+    for_each(wallets, [&from_wallet, &sender](const std::unique_ptr<Wallet> &w) {
+        if (w->get_wallet_address() == from_wallet) {
+            sender = w.get();
+        }
+    });
 
-    if (sender_it == wallets.end() || receiver_it == wallets.end()) {
+    for_each(wallets, [&to_wallet, &receiver](const std::unique_ptr<Wallet> &w) {
+        if (w->get_wallet_address() == to_wallet) {
+            receiver = w.get();
+        }
+    });
+
+    if (sender == nullptr || receiver == nullptr) {
         std::cerr << "Sender or receiver wallet not found." << std::endl;
         return;
     }
-
-    Wallet *sender = sender_it->get();
-    Wallet *receiver = receiver_it->get();
 
     if (sender->get_wallet_balance() < amount) {
         std::cerr << "Insufficient balance in sender's wallet." << std::endl;
@@ -145,16 +152,10 @@ void Account::transfer_money(const std::string &from_wallet, const std::string &
     receiver->set_wallet_balance(receiver->get_wallet_balance() + amount);
     sender->update_balance();
     receiver->update_balance();
+
     Transaction transaction(conn);
     transaction.add_transaction(from_wallet, to_wallet, amount, 0);
     std::cout << "Transfer successful!" << std::endl;
-}
-
-void Account::display_account_info() const {
-    std::cout << "Client name: " << username << "\nClient email: " << email << "\nWallets:" << std::endl;
-    for (const auto &wallet: wallets) {
-        std::cout << " - " << wallet->get_wallet_address() << ": " << wallet->get_wallet_balance() << std::endl;
-    }
 }
 
 pqxx::result Account::get_wallets_from_db(int account_id) {

@@ -1,8 +1,8 @@
 #ifndef UPDVECTOR_H
 #define UPDVECTOR_H
+
 #include <vector>
-#include <algorithm>
-#include <stdexcept>
+#include "Iterator.h"
 
 template <typename T>
 class UpdVector {
@@ -10,31 +10,32 @@ private:
     std::vector<T> data;
 
 public:
-    using iterator = typename std::vector<T>::iterator;
-    using const_iterator = typename std::vector<T>::const_iterator;
+    using iterator = UpdIterator<T>;
+    using const_iterator = UpdIterator<const T>;
 
     void add(T item) {
         data.push_back(std::move(item));
     }
 
     void remove(iterator it) {
-        data.erase(it);
+        data.erase(data.begin() + (it - begin()));
     }
 
+
     iterator begin() {
-        return data.begin();
+        return iterator(data.data());
     }
 
     const_iterator begin() const {
-        return data.begin();
+        return const_iterator(data.data());
     }
 
     iterator end() {
-        return data.end();
+        return iterator(data.data() + data.size());
     }
 
     const_iterator end() const {
-        return data.end();
+        return const_iterator(data.data() + data.size());
     }
 
     void clear() {
@@ -54,14 +55,11 @@ public:
     }
 };
 
-template <typename T>
-bool contains(const UpdVector<T>& container, const T& value) {
-    std::ranges::for_each(container, [&](const auto& elem) {
-        if (elem == value) {
-            return true;
-        }
-    });
-    return false;
+template <typename Container, typename Func>
+void for_each(Container &container, Func func) {
+    for (auto &element : container) {
+        func(element);
+    }
 }
 
 #endif // UPDVECTOR_H
