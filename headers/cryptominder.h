@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "basedb.h"
+#include "DatabaseException.h"
 
 namespace Ui {
 class Cryptominder;
