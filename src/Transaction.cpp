@@ -1,6 +1,7 @@
 #include "Transaction.h"
 #include <iostream>
 #include <pqxx/pqxx>
+#include <qDebug>
 
 Transaction::Transaction(pqxx::connection &connection) : C(connection) {
 }
@@ -40,4 +41,91 @@ std::vector<TransactionData> Transaction::get_transactions(std::string_view wall
     }
 
     return transactions;
+}
+
+
+nlohmann::json Transaction::get_filtered_report(const std::string &sender_wallet_address,
+                                                const std::string &receiver_wallet_address,
+                                                const std::string &created_at) {
+    pqxx::nontransaction N(C);
+    std::vector<TransactionData> transactions;
+
+    std::string query = "SELECT * FROM transactions WHERE 1=1";
+    std::vector<std::string> params;
+
+    if (!sender_wallet_address.empty() || !receiver_wallet_address.empty()) {
+        query += " AND (";
+
+        if (!sender_wallet_address.empty()) {
+            query += "sender_wallet_address = $" + std::to_string(params.size() + 1);
+            params.push_back(sender_wallet_address);
+        }
+
+        if (!receiver_wallet_address.empty()) {
+            if (!sender_wallet_address.empty()) {
+                query += " OR ";
+            }
+            query += "receiver_wallet_address = $" + std::to_string(params.size() + 1);
+            params.push_back(receiver_wallet_address);
+        }
+
+        query += ")";
+    }
+
+    if (!created_at.empty()) {
+        query += " AND created_at::date = $" + std::to_string(params.size() + 1);
+        params.push_back(created_at);
+    }
+
+    pqxx::result R;
+    try {
+        // Вызываем exec_params с учетом количества параметров
+        switch (params.size()) {
+        case 0:
+            R = N.exec(query);
+            break;
+        case 1:
+            R = N.exec_params(query, params[0].c_str());
+            break;
+        case 2:
+            R = N.exec_params(query, params[0].c_str(), params[1].c_str());
+            break;
+        case 3:
+            R = N.exec_params(query, params[0].c_str(), params[1].c_str(), params[2].c_str());
+            break;
+        default:
+            throw std::runtime_error("Too many parameters for this query");
+        }
+    } catch (const pqxx::sql_error &e) {
+        qDebug() << "SQL error: " << e.what();
+        return {};
+    }
+
+    for (const auto &row : R) {
+        TransactionData transaction{
+            row["transaction_id"].as<int>(),
+            row["sender_wallet_address"].as<std::string>(),
+            row["receiver_wallet_address"].as<std::string>(),
+            row["amount"].as<double>(),
+            row["transaction_fee"].as<double>(),
+            row["status"].as<std::string>(),
+            row["created_at"].as<std::string>()
+        };
+        transactions.push_back(transaction);
+    }
+
+    nlohmann::json j_report = nlohmann::json::array();
+    for (const auto &transaction : transactions) {
+        j_report.push_back({
+            {"transaction_id", transaction.transaction_id},
+            {"sender_wallet_address", transaction.sender_wallet_address},
+            {"receiver_wallet_address", transaction.receiver_wallet_address},
+            {"amount", transaction.amount},
+            {"transaction_fee", transaction.transaction_fee},
+            {"status", transaction.status},
+            {"created_at", transaction.created_at}
+        });
+    }
+
+    return j_report;
 }

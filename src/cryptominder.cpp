@@ -10,6 +10,7 @@
 #include <QLabel>
 #include <QListWidget>
 #include "ui/ui_cryptominder.h"
+#include "statistics.h"
 
 Cryptominder::Cryptominder(QWidget *parent)
     : QMainWindow(parent)
@@ -68,16 +69,6 @@ void Cryptominder::on_send_button_clicked()
     connect(send_window.get(), &Send::send_money, this, &Cryptominder::populateTransactionList);
     send_window->setModal(true);
     send_window->exec();
-}
-
-
-void Cryptominder::on_add_button_clicked()
-{
-    auto add_wallet = std::make_unique<AddWallet>(this);
-    connect(add_wallet.get(), &AddWallet::walletAdded, this, &Cryptominder::updateWalletData);
-    connect(add_wallet.get(), &AddWallet::walletAdded, this, &Cryptominder::populateTransactionList);
-    add_wallet->setModal(true);
-    add_wallet->exec();
 }
 
 
@@ -153,3 +144,24 @@ void Cryptominder::populateTransactionList() {
         ui->transactionTable->setItem(i, 2, new QTableWidgetItem(QString::number(t.amount, 'f', 2)));
     }
 }
+
+void Cryptominder::on_get_statistics_clicked()
+{
+    QString label_text = ui->comboBox->currentText();
+    auto statistics = std::make_unique<Statistics>(this);
+    connect(this, &Cryptominder::sendData, statistics.get(), &Statistics::receiveData);
+    emit sendData(label_text);
+    statistics->setModal(true);
+    statistics->exec();
+}
+
+
+void Cryptominder::on_add_wallet_clicked()
+{
+    auto add_wallet = std::make_unique<AddWallet>(this);
+    connect(add_wallet.get(), &AddWallet::walletAdded, this, &Cryptominder::updateWalletData);
+    connect(add_wallet.get(), &AddWallet::walletAdded, this, &Cryptominder::populateTransactionList);
+    add_wallet->setModal(true);
+    add_wallet->exec();
+}
+

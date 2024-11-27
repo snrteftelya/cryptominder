@@ -2,7 +2,8 @@
 #include <iostream>
 #include <pqxx/pqxx>
 #include <memory>
-#include <vector>
+#include <cstdio>
+
 
 Account::Account(const std::string &username, const std::string &email, const std::string &password_hash,
                  pqxx::connection &connection)
@@ -159,7 +160,6 @@ void Account::transfer_money(const std::string &from_wallet, const std::string &
 
     Transaction transaction(conn);
     transaction.add_transaction(from_wallet, to_wallet, amount, 0);
-    std::cout << "Transfer successful!" << std::endl;
 }
 
 pqxx::result Account::get_wallets_from_db(int account_id) {

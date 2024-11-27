@@ -21,7 +21,7 @@ private slots:
 
     void on_send_button_clicked();
 
-    void on_add_button_clicked();
+    void on_add_wallet_clicked();
 
     void on_delete_wallet_clicked();
 
@@ -30,6 +30,8 @@ private slots:
     void populateTransactionList();
 
     void updateWalletData();
+
+    void on_get_statistics_clicked();
 
 private:
     Ui::Cryptominder *ui;
