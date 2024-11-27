@@ -18,7 +18,6 @@ void Transaction::add_transaction(const std::string_view &sender_wallet_address,
     pqxx::result R = W.exec(query);
     int transaction_id = R[0][0].as<int>();
     W.commit();
-    std::cout << "Transaction w ID: " << transaction_id << std::endl;
 }
 
 std::vector<TransactionData> Transaction::get_transactions(std::string_view wallet_address) {

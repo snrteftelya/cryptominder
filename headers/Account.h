@@ -40,5 +40,4 @@ public:
 
     pqxx::result get_wallets_from_db(int account_id);
 
-    pqxx::row get_wallet_from_db(int account_id, std::string_view wallet_address);
 };

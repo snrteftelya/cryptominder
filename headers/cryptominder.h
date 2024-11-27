@@ -33,6 +33,8 @@ private slots:
 
     void on_get_statistics_clicked();
 
+    bool isDatabaseConnected();
+
 private:
     Ui::Cryptominder *ui;
 

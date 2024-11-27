@@ -30,7 +30,6 @@ void Account::load_from_db(int account_id) {
                 row["wallet_address"].c_str(), row["balance"].as<double>(), conn
                 ));
         }
-        std::cout << "Account and wallets loaded from database." << std::endl;
     } else {
         std::cerr << "Account not found in the database." << std::endl;
     }
@@ -49,7 +48,6 @@ void Account::save_to_db() const {
             );
     }
     txn.commit();
-    std::cout << "Account and wallets saved to database." << std::endl;
 }
 
 void Account::set_client_name(const std::string &client_name) {
@@ -57,7 +55,6 @@ void Account::set_client_name(const std::string &client_name) {
     pqxx::work txn(conn);
     txn.exec_params("UPDATE account SET username = $1 WHERE account_id = $2", client_name, 1);
     txn.commit();
-    std::cout << "Client name updated successfully." << std::endl;
 }
 
 void Account::set_account_email(const std::string &client_email) {
@@ -65,7 +62,6 @@ void Account::set_account_email(const std::string &client_email) {
     pqxx::work txn(conn);
     txn.exec_params("UPDATE account SET email = $1 WHERE account_id = $2", client_email, 1);
     txn.commit();
-    std::cout << "Client email updated successfully." << std::endl;
 }
 
 void Account::add_wallet(double initial_balance) {
@@ -94,7 +90,6 @@ void Account::add_wallet(double initial_balance) {
         1, wallet_address, "TON", initial_balance
         );
     txn.commit();
-    std::cout << "Wallet added successfully with address: " << wallet_address << std::endl;
 }
 
 bool Account::delete_wallet(const std::string &wallet_address) {
@@ -114,7 +109,6 @@ bool Account::delete_wallet(const std::string &wallet_address) {
         pqxx::work txn(conn);
         txn.exec_params("DELETE FROM wallet WHERE wallet_address = $1", wallet_address);
         txn.commit();
-        std::cout << "Wallet deleted successfully." << std::endl;
         return true;
     } else {
         std::cerr << "Wallet not found." << std::endl;
@@ -167,15 +161,4 @@ pqxx::result Account::get_wallets_from_db(int account_id) {
     return txn.exec_params(
         "SELECT wallet_address, balance FROM wallet WHERE account_id = $1", account_id
         );
-}
-
-pqxx::row Account::get_wallet_from_db(int account_id, std::string_view wallet_address) {
-    pqxx::work txn(conn);
-    pqxx::result wallet_result = txn.exec_params(
-        "SELECT wallet_address, balance FROM wallet WHERE account_id = $1 AND wallet_address = $2", account_id, wallet_address
-        );
-    if (wallet_result.empty()) {
-        std::cout << "No wallet found for the given account ID.";
-    }
-    return wallet_result[0];
 }

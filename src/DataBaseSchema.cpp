@@ -45,6 +45,4 @@ void DatabaseSchema::create_tables() {
     W.exec(create_transactions_table);
 
     W.commit();
-
-    std::cout << "Tables are successfully created or exist." << std::endl;
 }

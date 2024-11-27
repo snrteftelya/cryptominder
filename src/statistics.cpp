@@ -51,13 +51,6 @@ void Statistics::on_get_statistics_button_clicked()
         receiver_wallet_address = received_data.toStdString();
     }
 
-    qDebug() << "Getting statistics...";
-    qDebug() << "Selected date:" << selected_date;
-    qDebug() << "Is sender checked:" << is_sender_checked;
-    qDebug() << "Is receiver checked:" << is_receiver_checked;
-    qDebug() << "Receiver wallet address:" << QString::fromStdString(receiver_wallet_address);
-    qDebug() << "Sender wallet address:" << QString::fromStdString(sender_wallet_address);
-
     BaseDatabase database;
     pqxx::connection *conn = database.getConnection();
     Transaction transaction(*conn);
@@ -67,15 +60,12 @@ void Statistics::on_get_statistics_button_clicked()
 
     QFile file("/Users/snrteftelya/Desktop/report.json");
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        qDebug() << "Failed to open file for writing.";
         return;
     }
 
     QTextStream out(&file);
     out << QString::fromStdString(report.dump(4));
     file.close();
-
-    qDebug() << "Report written successfully!";
     accept();
 }
 
