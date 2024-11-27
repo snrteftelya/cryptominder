@@ -11,7 +11,7 @@
 #include <QListWidget>
 #include "ui/ui_cryptominder.h"
 #include "statistics.h"
-#include "DatabaseException.h"
+#include "DataBaseException.h"
 #include <QMessageBox>
 
 Cryptominder::Cryptominder(QWidget *parent)
