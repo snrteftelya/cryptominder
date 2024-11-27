@@ -57,7 +57,7 @@ nlohmann::json Transaction::get_filtered_report(const std::string &sender_wallet
         query += " AND (";
 
         if (!sender_wallet_address.empty()) {
-            query += "sender_wallet_address = $" + std::to_string(params.size() + 1);
+            query += std::format("sender_wallet_address = ${}", params.size() + 1);
             params.push_back(sender_wallet_address);
         }
 
@@ -65,7 +65,7 @@ nlohmann::json Transaction::get_filtered_report(const std::string &sender_wallet
             if (!sender_wallet_address.empty()) {
                 query += " OR ";
             }
-            query += "receiver_wallet_address = $" + std::to_string(params.size() + 1);
+            query += std::format("receiver_wallet_address = ${}", params.size() + 1);
             params.push_back(receiver_wallet_address);
         }
 
@@ -73,13 +73,13 @@ nlohmann::json Transaction::get_filtered_report(const std::string &sender_wallet
     }
 
     if (!created_at.empty()) {
-        query += " AND created_at::date = $" + std::to_string(params.size() + 1);
+        query += std::format(" AND created_at::date = ${}", params.size() + 1);
         params.push_back(created_at);
     }
 
+
     pqxx::result R;
     try {
-        // Вызываем exec_params с учетом количества параметров
         switch (params.size()) {
         case 0:
             R = N.exec(query);
@@ -93,8 +93,6 @@ nlohmann::json Transaction::get_filtered_report(const std::string &sender_wallet
         case 3:
             R = N.exec_params(query, params[0].c_str(), params[1].c_str(), params[2].c_str());
             break;
-        default:
-            throw std::runtime_error("Too many parameters for this query");
         }
     } catch (const pqxx::sql_error &e) {
         qDebug() << "SQL error: " << e.what();

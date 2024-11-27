@@ -61,28 +61,21 @@ void Statistics::on_get_statistics_button_clicked()
     BaseDatabase database;
     pqxx::connection *conn = database.getConnection();
     Transaction transaction(*conn);
+    nlohmann::json report = transaction.get_filtered_report(sender_wallet_address,
+                                                            receiver_wallet_address,
+                                                            created_at);
 
-    try {
-        nlohmann::json report = transaction.get_filtered_report(sender_wallet_address,
-                                                                receiver_wallet_address,
-                                                                created_at);
-
-        QFile file("/Users/snrteftelya/Desktop/report.json");
-        if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-            qDebug() << "Failed to open file for writing.";
-            return;
-        }
-
-        QTextStream out(&file);
-        out << QString::fromStdString(report.dump(4));
-        file.close();
-
-        qDebug() << "Report written successfully!";
-    } catch (const pqxx::sql_error &e) {
-        qDebug() << "SQL error:" << e.what();
-    } catch (const std::exception &e) {
-        qDebug() << "An error occurred:" << e.what();
+    QFile file("/Users/snrteftelya/Desktop/report.json");
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        qDebug() << "Failed to open file for writing.";
+        return;
     }
+
+    QTextStream out(&file);
+    out << QString::fromStdString(report.dump(4));
+    file.close();
+
+    qDebug() << "Report written successfully!";
     accept();
 }
 
