@@ -11,7 +11,7 @@ Statistics::Statistics(QWidget *parent)
     , ui(new Ui::Statistics)
 {
     ui->setupUi(this);
-    createAccount("Mikalai", "test", "123");
+    create_account("Mikalai", "test", "123");
     account->load_from_db(1);
     auto rows = account->get_wallets_from_db(1);
 
@@ -71,6 +71,6 @@ void Statistics::on_get_statistics_button_clicked()
 
 
 
-void Statistics::receiveData(const QString &data) {
+void Statistics::receive_data(const QString &data) {
     received_data = data;
 }

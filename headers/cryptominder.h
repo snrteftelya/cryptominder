@@ -28,19 +28,19 @@ private slots:
 
     void on_top_up_button_clicked();
 
-    void populateTransactionList();
+    void populate_transaction_list();
 
-    void updateWalletData();
+    void update_wallet_data();
 
     void on_get_statistics_clicked();
 
-    bool isDatabaseConnected();
+    bool is_database_connected();
 
 private:
     Ui::Cryptominder *ui;
 
 signals:
-    void sendData(const QString &data);
+    void send_data(const QString &data);
 };
 
 #endif // CRYPTOMINDER_H

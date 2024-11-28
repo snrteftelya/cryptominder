@@ -15,7 +15,7 @@ class Receive : public QDialog, public BaseDatabase
 public:
     explicit Receive(QWidget *parent = nullptr);
     ~Receive() final;
-    void receiveData(const QString &data);
+    void receive_data(const QString &data);
 
 private slots:
     void on_copyButton_clicked();

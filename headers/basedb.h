@@ -16,7 +16,7 @@ public:
 
     virtual ~BaseDatabase() = default;
 
-    void createAccount(const std::string& name, const std::string& username, const std::string& password) {
+    void create_account(const std::string& name, const std::string& username, const std::string& password) {
         account = std::make_unique<Account>(name, username, password, *conn);
     }
 

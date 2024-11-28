@@ -24,7 +24,7 @@ private:
     Ui::AddWallet *ui;
 
 signals:
-    void walletAdded();
+    void wallet_added();
 
 };
 

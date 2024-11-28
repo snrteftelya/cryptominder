@@ -21,6 +21,6 @@ void Receive::on_copyButton_clicked()
     accept();
 }
 
-void Receive::receiveData(const QString &data) {
+void Receive::receive_data(const QString &data) {
     ui->walletAddressLabel->setText(data);
 }

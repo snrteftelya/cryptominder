@@ -15,7 +15,7 @@ class Statistics : public QDialog, public BaseDatabase
 public:
     explicit Statistics(QWidget *parent = nullptr);
     ~Statistics() final;
-    void receiveData(const QString &data);
+    void receive_data(const QString &data);
 
 private slots:
     void on_get_statistics_button_clicked();

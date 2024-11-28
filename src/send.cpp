@@ -7,7 +7,7 @@ Send::Send(QWidget *parent)
     , ui(new Ui::Send)
 {
     ui->setupUi(this);
-    createAccount("Mikalai", "test", "123");
+    create_account("Mikalai", "test", "123");
     account->load_from_db(1);
     auto rows = account->get_wallets_from_db(1);
     for (const auto &row : rows) {
@@ -33,6 +33,6 @@ void Send::on_send_wallet_button_clicked()
 }
 
 
-void Send::receiveData(const QString &data) {
+void Send::receive_data(const QString &data) {
     ui->comboBox->setCurrentText(data);
 }

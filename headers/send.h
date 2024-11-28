@@ -15,7 +15,7 @@ class Send : public QDialog, public BaseDatabase
 public:
     explicit Send(QWidget *parent = nullptr);
     ~Send() final;
-    void receiveData(const QString &data);
+    void receive_data(const QString &data);
 
 private slots:
     void on_send_wallet_button_clicked();
