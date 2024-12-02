@@ -3,6 +3,8 @@
 
 #include <QDialog>
 #include "basedb.h"
+#include "DatabaseException.h"
+
 
 namespace Ui {
 class AddWallet;

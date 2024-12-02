@@ -20,6 +20,17 @@ public:
         account = std::make_unique<Account>(name, username, password, *conn);
     }
 
+    bool is_database_connected()
+    {
+        try {
+            BaseDatabase database;
+            pqxx::connection* conn = database.getConnection();
+            return conn->is_open();
+        } catch (const pqxx::broken_connection &) {
+            return false;
+        }
+    }
+
     pqxx::connection* getConnection() { return conn.get(); }
     Account* getAccount() { return account.get(); }
 };

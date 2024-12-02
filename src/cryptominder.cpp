@@ -126,17 +126,6 @@ void Cryptominder::on_top_up_button_clicked()
     }
 }
 
-bool Cryptominder::is_database_connected()
-{
-    try {
-        BaseDatabase database;
-        pqxx::connection* conn = database.getConnection();
-        return conn->is_open();
-    } catch (const pqxx::broken_connection &) {
-        return false;
-    }
-}
-
 void Cryptominder::update_wallet_data() {
     ui->comboBox->clear();
     account->load_from_db(1);
